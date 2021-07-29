@@ -1,7 +1,9 @@
 import "./App.css";
+import React, { useState } from "react";
+import { SimpleModal } from "./components/SimpleModal.jsx";
 
 function App() {
-	return <div className="App"></div>;
+	return <SimpleModal></SimpleModal>;
 }
 
 export default App;
