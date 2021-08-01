@@ -1,5 +1,6 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
+import AppContext from "../context/AppContext";
 
 import {
 	Button,
@@ -16,9 +17,14 @@ import {
 } from "@chakra-ui/react";
 
 export default function Search() {
-	const { useState } = React;
+	const { useState, useContext } = React;
+
+	const appContext = useContext(AppContext);
+	// eslint-disable-next-line
+	const {} = appContext;
 
 	const [search, setSearch] = useState(true);
+	// eslint-disable-next-line
 	const [animalTypes, setAnimalTypes] = useState([
 		"Dog",
 		"Cat",

@@ -2,16 +2,17 @@ import * as React from "react";
 import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
 
-import { Link } from "react-router-dom";
-import { SearchIcon, ExternalLinkIcon } from "@chakra-ui/icons";
+import { Redirect } from "react-router-dom";
+import {} from "@chakra-ui/icons";
 
-export default function Home() {
+export default function MyPets() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
 	const { userLogged, userData } = appContext;
 	return (
 		<>
+			{!userLogged && <Redirect to="/home" />}
 			<NavBar></NavBar>
 			<div className="container">
 				{userLogged && (
@@ -33,20 +34,7 @@ export default function Home() {
 						</div>
 					</>
 				) : (
-					<>
-						<div className="mt-4">
-							<SearchIcon w={5} h={5} />
-							<Link to="/search" className="drawer-link">
-								Search Page
-							</Link>
-						</div>
-						<div className="">
-							<ExternalLinkIcon w={5} h={5} />
-							<Link to="/my-pets" className="drawer-link">
-								My Pets Page
-							</Link>
-						</div>
-					</>
+					<></>
 				)}
 			</div>
 		</>

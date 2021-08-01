@@ -1,4 +1,5 @@
 body {
+	overflow-y: scroll;
 	margin: 0;
 	height: 100vmin;
 	background-color: antiquewhite;

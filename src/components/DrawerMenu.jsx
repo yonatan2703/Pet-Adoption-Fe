@@ -1,5 +1,5 @@
 import * as React from "react";
-import { HamburgerIcon } from "@chakra-ui/icons";
+import AppContext from "../context/AppContext";
 
 import {
 	Button,
@@ -11,13 +11,23 @@ import {
 	DrawerContent,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { SearchIcon, SunIcon } from "@chakra-ui/icons";
+import {
+	SearchIcon,
+	SunIcon,
+	HamburgerIcon,
+	ExternalLinkIcon,
+	SettingsIcon,
+} from "@chakra-ui/icons";
 
 import { Link } from "react-router-dom";
 
 function DrawerMenu() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = React.useRef();
+	const { useContext } = React;
+
+	const appContext = useContext(AppContext);
+	const { userLogged } = appContext;
 
 	return (
 		<>
@@ -43,7 +53,7 @@ function DrawerMenu() {
 					<DrawerBody className="links-cont">
 						<div>
 							<SunIcon w={5} h={5} />
-							<Link to="/" className="drawer-link">
+							<Link to="/home" className="drawer-link">
 								Home
 							</Link>
 						</div>
@@ -53,13 +63,39 @@ function DrawerMenu() {
 								Search
 							</Link>
 						</div>
+						{userLogged && (
+							<>
+								<div>
+									<ExternalLinkIcon w={5} h={5} />
+									<Link to="/my-pets" className="drawer-link">
+										My Pets
+									</Link>
+								</div>
+								<div>
+									<ExternalLinkIcon w={5} h={5} />
+									<Link
+										to="/pet-page/1"
+										className="drawer-link"
+									>
+										Pet Page
+									</Link>
+								</div>
+							</>
+						)}
 					</DrawerBody>
 
 					<DrawerFooter>
-						<Button variant="outline" mr={3} onClick={onClose}>
-							Cancel
-						</Button>
-						<Button colorScheme="blue">Save</Button>
+						{userLogged && (
+							<>
+								<SettingsIcon w={5} h={5} />
+								<Link
+									to="/profile-settings"
+									className="drawer-link"
+								>
+									Profile Settings
+								</Link>
+							</>
+						)}
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>

@@ -51,7 +51,6 @@ function LoginModal() {
 										<PasswordInput text="Password" />
 									</Stack>
 								</ModalBody>
-
 								<ModalFooter>
 									<Button
 										variant="ghost"
