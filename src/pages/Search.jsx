@@ -64,6 +64,7 @@ export default function Search() {
 								<Select placeholder="Adoption status">
 									<option>Adopted</option>
 									<option>Fostered</option>
+									<option>Null</option>
 								</Select>
 							</FormControl>
 							<FormControl id="animal-name">

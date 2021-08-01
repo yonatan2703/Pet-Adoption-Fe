@@ -16,6 +16,8 @@ import MyPets from "./pages/MyPets";
 import PetPage from "./pages/PetPage";
 import ProfileSettings from "./pages/ProfileSettings";
 
+import { myPetsArray, savedPetsArray, allPetsArray } from "./lib/mockData";
+
 function App() {
 	const { useState } = React;
 
@@ -34,8 +36,10 @@ function App() {
 	const [userData, setUserData] = useState(defaultUser);
 	const [userLogged, setUserLogged] = useState(false);
 	const [password, setPassword] = useState(defaultUser.password);
-	const [savedPets, setSavedPets] = useState([]);
-	const [myPets, setMyPets] = useState([]);
+	const [savedPets, setSavedPets] = useState(savedPetsArray);
+	const [myPets, setMyPets] = useState(myPetsArray);
+	const [allPets, setAllPets] = useState(allPetsArray);
+	const [togglePets, setTogglePets] = useState(true);
 
 	return (
 		<ChakraProvider>
@@ -51,6 +55,9 @@ function App() {
 					setSavedPets: setSavedPets,
 					myPets: myPets,
 					setMyPets: setMyPets,
+					allPets: allPets,
+					togglePets: togglePets,
+					setTogglePets: setTogglePets,
 				}}
 			>
 				<Router>

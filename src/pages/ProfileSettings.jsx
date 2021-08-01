@@ -27,8 +27,8 @@ export default function Search() {
 		let saved = true;
 		if (saved) {
 			setUserData({ ...tempUserData, password: password });
-        }
-        console.log(userData);
+		}
+		console.log(userData);
 	};
 
 	return (

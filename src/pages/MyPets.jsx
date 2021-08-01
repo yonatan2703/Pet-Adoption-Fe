@@ -1,40 +1,54 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
+import PetCard from "../components/PetCard";
 import AppContext from "../context/AppContext";
 
 import { Redirect } from "react-router-dom";
-import {} from "@chakra-ui/icons";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 
 export default function MyPets() {
-	const { useContext } = React;
+	const { useContext, useState } = React;
 
 	const appContext = useContext(AppContext);
-	const { userLogged, userData } = appContext;
+	const { userLogged, myPets, savedPets, togglePets, setTogglePets } =
+		appContext;
+
 	return (
 		<>
 			{!userLogged && <Redirect to="/home" />}
 			<NavBar></NavBar>
 			<div className="container">
-				{userLogged && (
-					<div className="main-title">
-						Hello {userData.firstName} {userData.lastName}!
-					</div>
-				)}
-				<div className="main-title">
-					Welcome to the pet adoption agency
-				</div>
-				{!userLogged ? (
-					<>
-						<div className="second-title">
-							Go agead and sign up/login to adopt your pet today
+				<Button
+					colorScheme="blue"
+					onClick={() => {
+						setTogglePets(!togglePets);
+					}}
+					className="mt-3"
+				>
+					{togglePets ? "Show My Saved Pets" : "Show My Pets"}
+				</Button>
+				{togglePets ? (
+					myPets.length ? (
+						<SimpleGrid columns={4} spacing={5}>
+							{myPets.map((ele) => {
+								return <PetCard pet={ele}></PetCard>;
+							})}
+						</SimpleGrid>
+					) : (
+						<div className="h1">
+							You currently do not own or foster any pets.
 						</div>
-						<div className="second-title">
-							Or go ahead and use our search to find you perfect
-							match first
-						</div>
-					</>
+					)
+				) : savedPets.length ? (
+					<SimpleGrid columns={4} spacing={5}>
+						{savedPets.map((ele) => {
+							return <PetCard pet={ele}></PetCard>;
+						})}
+					</SimpleGrid>
 				) : (
-					<></>
+					<div className="h1">
+						You currently do not have any saved pets.
+					</div>
 				)}
 			</div>
 		</>

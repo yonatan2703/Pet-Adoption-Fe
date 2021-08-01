@@ -71,15 +71,6 @@ function DrawerMenu() {
 										My Pets
 									</Link>
 								</div>
-								<div>
-									<ExternalLinkIcon w={5} h={5} />
-									<Link
-										to="/pet-page/1"
-										className="drawer-link"
-									>
-										Pet Page
-									</Link>
-								</div>
 							</>
 						)}
 					</DrawerBody>
