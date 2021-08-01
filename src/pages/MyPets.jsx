@@ -7,7 +7,7 @@ import { Redirect } from "react-router-dom";
 import { Button, SimpleGrid } from "@chakra-ui/react";
 
 export default function MyPets() {
-	const { useContext, useState } = React;
+	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
 	const { userLogged, myPets, savedPets, togglePets, setTogglePets } =
@@ -31,7 +31,9 @@ export default function MyPets() {
 					myPets.length ? (
 						<SimpleGrid columns={4} spacing={5}>
 							{myPets.map((ele) => {
-								return <PetCard pet={ele}></PetCard>;
+								return (
+									<PetCard pet={ele} width={"100%"}></PetCard>
+								);
 							})}
 						</SimpleGrid>
 					) : (
@@ -42,7 +44,7 @@ export default function MyPets() {
 				) : savedPets.length ? (
 					<SimpleGrid columns={4} spacing={5}>
 						{savedPets.map((ele) => {
-							return <PetCard pet={ele}></PetCard>;
+							return <PetCard pet={ele} width={"100%"}></PetCard>;
 						})}
 					</SimpleGrid>
 				) : (

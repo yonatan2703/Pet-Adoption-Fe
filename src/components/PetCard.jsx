@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 import { Box, Image } from "@chakra-ui/react";
 
 export default function PetCard(props) {
-	const { pet } = props;
+	const { pet, width } = props;
 
 	return (
 		<Box
-			w="100%"
+			w={width}
 			borderWidth="3px"
 			borderRadius="lg"
 			overflow="hidden"

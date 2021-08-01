@@ -30,6 +30,7 @@ export default function PetPage() {
 		});
 		console.log(newArr[0]);
 		setPet(newArr[0]);
+		// eslint-disable-next-line
 	}, []);
 
 	const [pet, setPet] = useState();

@@ -1,5 +1,6 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
+import PetCard from "../components/PetCard";
 import AppContext from "../context/AppContext";
 
 import {
@@ -21,9 +22,11 @@ export default function Search() {
 
 	const appContext = useContext(AppContext);
 	// eslint-disable-next-line
-	const {} = appContext;
+	const { allPets } = appContext;
 
-	const [search, setSearch] = useState(true);
+	const [searchSimple, setSearchSimple] = useState(true);
+	const [searchResults, setSearchResults] = useState();
+
 	// eslint-disable-next-line
 	const [animalTypes, setAnimalTypes] = useState([
 		"Dog",
@@ -35,6 +38,8 @@ export default function Search() {
 
 	const handleSearch = () => {
 		console.log("Searching...");
+		setSearchResults(allPets);
+		console.log(searchResults);
 	};
 
 	return (
@@ -43,9 +48,9 @@ export default function Search() {
 			<div className="container">
 				<Button
 					className="mb-3 mt-3"
-					onClick={() => setSearch(!search)}
+					onClick={() => setSearchSimple(!searchSimple)}
 				>
-					{search ? "Advanced Search" : "Simple Search"}
+					{searchSimple ? "Advanced Search" : "Simple Search"}
 				</Button>
 
 				<Stack spacing={3} className="mb-3">
@@ -57,7 +62,7 @@ export default function Search() {
 							})}
 						</Select>
 					</FormControl>
-					{!search && (
+					{!searchSimple && (
 						<>
 							<FormControl id="adoption-status">
 								<FormLabel>Adoption status</FormLabel>
@@ -79,7 +84,7 @@ export default function Search() {
 								<FormControl id="min-height">
 									<FormLabel>Min height in CM</FormLabel>
 									<NumberInput
-										max={150}
+										max={160}
 										min={5}
 										defaultValue={5}
 									>
@@ -93,7 +98,7 @@ export default function Search() {
 								<FormControl id="max-height">
 									<FormLabel>Max height in CM</FormLabel>
 									<NumberInput
-										max={150}
+										max={160}
 										min={5}
 										defaultValue={150}
 									>
@@ -150,6 +155,13 @@ export default function Search() {
 				>
 					Search
 				</Button>
+				<div className="search-results">
+					{searchResults &&
+						searchResults.length &&
+						searchResults.map((ele) => {
+							return <PetCard pet={ele} width={"50%"}></PetCard>;
+						})}
+				</div>
 			</div>
 		</>
 	);
