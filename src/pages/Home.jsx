@@ -1,15 +1,10 @@
 import * as React from "react";
-import { ChakraProvider } from "@chakra-ui/react";
-import DrawerMenu from "../components/DrawerMenu";
-import LoginModal from "../components/LoginModal";
+import NavBar from "../components/NavBar";
 
 export default function Home() {
 	return (
-		<ChakraProvider>
-			<div className="navbar prussian-blue-bc">
-				<DrawerMenu></DrawerMenu>
-				<LoginModal></LoginModal>
-			</div>
+		<>
+			<NavBar></NavBar>
 			<div className="container">
 				<div className="main-title">
 					Welcome to the pet adoption agency
@@ -22,6 +17,6 @@ export default function Home() {
 					first
 				</div>
 			</div>
-		</ChakraProvider>
+		</>
 	);
 }

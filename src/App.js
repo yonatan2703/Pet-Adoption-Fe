@@ -10,16 +10,14 @@ function App() {
 	return (
 		<ChakraProvider>
 			<Router>
-				<div>
-					<Switch>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Route exact path="/search">
-							<Search />
-						</Route>
-					</Switch>
-				</div>
+				<Switch>
+					<Route exact path="/">
+						<Home />
+					</Route>
+					<Route exact path="/search">
+						<Search />
+					</Route>
+				</Switch>
 			</Router>
 		</ChakraProvider>
 	);

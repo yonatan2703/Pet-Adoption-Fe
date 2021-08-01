@@ -11,7 +11,7 @@ import {
 	DrawerContent,
 	useDisclosure,
 } from "@chakra-ui/react";
-import { Search2Icon, SunIcon } from "@chakra-ui/icons";
+import { SearchIcon, SunIcon } from "@chakra-ui/icons";
 
 import { Link } from "react-router-dom";
 
@@ -48,7 +48,7 @@ function DrawerMenu() {
 							</Link>
 						</div>
 						<div>
-							<Search2Icon w={5} h={5} />
+							<SearchIcon w={5} h={5} />
 							<Link to="/search" className="drawer-link">
 								Search
 							</Link>
