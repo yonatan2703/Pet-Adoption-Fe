@@ -1,5 +1,6 @@
 import "./App.css";
 import * as React from "react";
+// eslint-disable-next-line
 import { v4 as uuidv4 } from "uuid";
 import { ChakraProvider } from "@chakra-ui/react";
 import {
@@ -15,6 +16,9 @@ import Search from "./pages/Search";
 import MyPets from "./pages/MyPets";
 import PetPage from "./pages/PetPage";
 import ProfileSettings from "./pages/ProfileSettings";
+import AdminAddPet from "./pages/AdminAddPet";
+import EditPet from "./pages/EditPet";
+import UserPage from "./pages/UserPage";
 
 import { myPetsArray, savedPetsArray, allPetsArray } from "./lib/mockData";
 
@@ -35,11 +39,20 @@ function App() {
 
 	const [userData, setUserData] = useState(defaultUser);
 	const [userLogged, setUserLogged] = useState(false);
+	const [userAdmin, setUserAdmin] = useState(false);
 	const [password, setPassword] = useState(defaultUser.password);
 	const [savedPets, setSavedPets] = useState(savedPetsArray);
 	const [myPets, setMyPets] = useState(myPetsArray);
+	// eslint-disable-next-line
 	const [allPets, setAllPets] = useState(allPetsArray);
 	const [togglePets, setTogglePets] = useState(true);
+	const [animalTypes, setAnimalTypes] = useState([
+		"Dog",
+		"Cat",
+		"Fish",
+		"Hamster",
+		"Turtle",
+	]);
 
 	return (
 		<ChakraProvider>
@@ -58,6 +71,10 @@ function App() {
 					allPets: allPets,
 					togglePets: togglePets,
 					setTogglePets: setTogglePets,
+					userAdmin: userAdmin,
+					setUserAdmin: setUserAdmin,
+					animalTypes: animalTypes,
+					setAnimalTypes: setAnimalTypes,
 				}}
 			>
 				<Router>
@@ -76,6 +93,15 @@ function App() {
 						</Route>
 						<Route exact path="/pet-page/:id">
 							<PetPage />
+						</Route>
+						<Route exact path="/add-pet">
+							<AdminAddPet />
+						</Route>
+						<Route exact path="/user/:id">
+							<UserPage />
+						</Route>
+						<Route exact path="/edit-pet/:id">
+							<EditPet />
 						</Route>
 					</Switch>
 					<Redirect from="/" to="/home" />

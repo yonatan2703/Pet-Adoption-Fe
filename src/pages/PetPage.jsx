@@ -21,8 +21,10 @@ export default function PetPage() {
 		allPets,
 	} = appContext;
 
+	const [pet, setPet] = useState();
+	const [petSaved, setPetSaved] = useState(false);
+
 	let { id } = useParams();
-	console.log(id);
 
 	useEffect(() => {
 		const newArr = allPets.filter((ele) => {
@@ -32,9 +34,6 @@ export default function PetPage() {
 		setPet(newArr[0]);
 		// eslint-disable-next-line
 	}, []);
-
-	const [pet, setPet] = useState();
-	const [petSaved, setPetSaved] = useState(false);
 
 	const idAppearsInArr = (array, ide) => {
 		let check = false;

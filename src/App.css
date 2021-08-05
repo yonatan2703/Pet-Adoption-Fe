@@ -80,3 +80,22 @@
 	align-items: center;
 	justify-content: center;
 }
+
+.pet-card-link {
+	padding: 10px;
+	padding-top: 5px;
+	font-size: 1.5rem;
+	border-radius: 10px;
+	color: whitesmoke;
+	background-color: #1c4d6e;
+}
+
+.css-ngod2l a:hover {
+	color: white !important;
+	background-color: #0b3c5d;
+}
+
+.width-full {
+	min-width: 65%;
+	max-width: 65%;
+}

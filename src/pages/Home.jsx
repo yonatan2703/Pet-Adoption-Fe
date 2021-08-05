@@ -1,6 +1,7 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
+import AdminDashboard from "../components/AdminDashboard";
 
 import { Link } from "react-router-dom";
 import { SearchIcon, ExternalLinkIcon } from "@chakra-ui/icons";
@@ -9,14 +10,15 @@ export default function Home() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
-	const { userLogged, userData } = appContext;
+	const { userLogged, userData, userAdmin } = appContext;
 	return (
 		<>
 			<NavBar></NavBar>
 			<div className="container">
 				{userLogged && (
 					<div className="main-title">
-						Hello {userData.firstName} {userData.lastName}!
+						Hello {userAdmin && "Admin"} {userData.firstName}{" "}
+						{userData.lastName}!
 					</div>
 				)}
 				<div className="main-title">
@@ -46,8 +48,15 @@ export default function Home() {
 								My Pets Page
 							</Link>
 						</div>
+						<div className="">
+							<ExternalLinkIcon w={5} h={5} />
+							<Link to="/add-pet" className="drawer-link">
+								Add Pet Page
+							</Link>
+						</div>
 					</>
 				)}
+				{userAdmin && <AdminDashboard />}
 			</div>
 		</>
 	);

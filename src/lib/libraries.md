@@ -1,9 +1,8 @@
 libraries used:
 
 1. Redux
-2. Material-UI
-3. uuidv4
-4. reactstrap
-5. chakra-ui
-6. bootstrap
-7. react-router-dom
+2. uuidv4
+3. chakra-ui
+4. bootstrap
+5. react-router-dom
+6. axios

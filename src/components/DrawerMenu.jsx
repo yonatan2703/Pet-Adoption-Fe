@@ -27,7 +27,7 @@ function DrawerMenu() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
-	const { userLogged } = appContext;
+	const { userLogged, userAdmin } = appContext;
 
 	return (
 		<>
@@ -64,14 +64,20 @@ function DrawerMenu() {
 							</Link>
 						</div>
 						{userLogged && (
-							<>
-								<div>
-									<ExternalLinkIcon w={5} h={5} />
-									<Link to="/my-pets" className="drawer-link">
-										My Pets
-									</Link>
-								</div>
-							</>
+							<div>
+								<ExternalLinkIcon w={5} h={5} />
+								<Link to="/my-pets" className="drawer-link">
+									My Pets
+								</Link>
+							</div>
+						)}
+						{userLogged && userAdmin && (
+							<div>
+								<ExternalLinkIcon w={5} h={5} />
+								<Link to="/add-pet" className="drawer-link">
+									Add Pet
+								</Link>
+							</div>
 						)}
 					</DrawerBody>
 

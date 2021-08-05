@@ -15,6 +15,7 @@ import {
 	NumberInputStepper,
 	NumberIncrementStepper,
 	NumberDecrementStepper,
+	SimpleGrid,
 } from "@chakra-ui/react";
 
 export default function Search() {
@@ -22,24 +23,30 @@ export default function Search() {
 
 	const appContext = useContext(AppContext);
 	// eslint-disable-next-line
-	const { allPets } = appContext;
+	const { allPets, animalTypes } = appContext;
 
 	const [searchSimple, setSearchSimple] = useState(true);
 	const [searchResults, setSearchResults] = useState();
 
-	// eslint-disable-next-line
-	const [animalTypes, setAnimalTypes] = useState([
-		"Dog",
-		"Cat",
-		"Fish",
-		"Hamster",
-		"Turtle",
-	]);
+	const [petType, setPetType] = useState();
+	const [petAdoptionStatus, setPetAdoptionStatus] = useState();
+	const [petName, setPetName] = useState();
+	const [petMinHeight, setPetMinHeight] = useState();
+	const [petMaxHeight, setPetMaxHeight] = useState();
+	const [petMinWeight, setPetMinWeight] = useState();
+	const [petMaxWeight, setPetMaxWeight] = useState();
 
 	const handleSearch = () => {
-		console.log("Searching...");
+		const query = { type: petType };
+		if (!searchSimple) {
+			query.adoptionStat = petAdoptionStatus;
+			query.name = petName;
+			query.minHeight = petMinHeight;
+			query.maxHeight = petMaxHeight;
+			query.minWeight = petMinWeight;
+			query.maxWeight = petMaxWeight;
+		}
 		setSearchResults(allPets);
-		console.log(searchResults);
 	};
 
 	return (
@@ -56,7 +63,12 @@ export default function Search() {
 				<Stack spacing={3} className="mb-3">
 					<FormControl id="animal-type">
 						<FormLabel>Type</FormLabel>
-						<Select placeholder="Type of animal">
+						<Select
+							placeholder="Type of animal"
+							onChange={(e) => {
+								setPetType(e.target.value);
+							}}
+						>
 							{animalTypes.map((ele) => {
 								return <option>{ele}</option>;
 							})}
@@ -66,7 +78,12 @@ export default function Search() {
 						<>
 							<FormControl id="adoption-status">
 								<FormLabel>Adoption status</FormLabel>
-								<Select placeholder="Adoption status">
+								<Select
+									placeholder="Adoption status"
+									onChange={(e) => {
+										setPetAdoptionStatus(e.target.value);
+									}}
+								>
 									<option>Adopted</option>
 									<option>Fostered</option>
 									<option>Null</option>
@@ -74,7 +91,12 @@ export default function Search() {
 							</FormControl>
 							<FormControl id="animal-name">
 								<FormLabel>Name</FormLabel>
-								<Input placeholder="Animal name" />
+								<Input
+									placeholder="Animal name"
+									onChange={(e) => {
+										setPetName(e.target.value);
+									}}
+								/>
 							</FormControl>
 							<Stack
 								spacing={3}
@@ -87,6 +109,9 @@ export default function Search() {
 										max={160}
 										min={5}
 										defaultValue={5}
+										onChange={(e) => {
+											setPetMinHeight(e.target.value);
+										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -101,6 +126,9 @@ export default function Search() {
 										max={160}
 										min={5}
 										defaultValue={150}
+										onChange={(e) => {
+											setPetMaxHeight(e.target.value);
+										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -121,6 +149,9 @@ export default function Search() {
 										max={100}
 										min={5}
 										defaultValue={5}
+										onChange={(e) => {
+											setPetMinWeight(e.target.value);
+										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -135,6 +166,9 @@ export default function Search() {
 										max={100}
 										min={5}
 										defaultValue={100}
+										onChange={(e) => {
+											setPetMaxWeight(e.target.value);
+										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -155,13 +189,13 @@ export default function Search() {
 				>
 					Search
 				</Button>
-				<div className="search-results">
-					{searchResults &&
-						searchResults.length &&
-						searchResults.map((ele) => {
-							return <PetCard pet={ele} width={"50%"}></PetCard>;
+				{searchResults && searchResults.length && (
+					<SimpleGrid columns={3} spacing={5}>
+						{searchResults.map((ele) => {
+							return <PetCard pet={ele} width={"100%"}></PetCard>;
 						})}
-				</div>
+					</SimpleGrid>
+				)}
 			</div>
 		</>
 	);

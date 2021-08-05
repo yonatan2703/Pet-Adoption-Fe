@@ -10,7 +10,7 @@ export default function NavBar() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
-	const { setUserLogged, userLogged } = appContext;
+	const { setUserLogged, userLogged, setUserAdmin } = appContext;
 
 	let location = useLocation();
 
@@ -33,6 +33,7 @@ export default function NavBar() {
 					className="prussian-blue-bc me-3"
 					onClick={() => {
 						setUserLogged(false);
+						setUserAdmin(false);
 					}}
 				>
 					Logout
@@ -44,6 +45,7 @@ export default function NavBar() {
 						className="prussian-blue-bc me-3"
 						onClick={() => {
 							setUserLogged(true);
+							setUserAdmin(true);
 						}}
 					>
 						Auto Login
