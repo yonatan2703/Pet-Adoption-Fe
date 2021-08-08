@@ -3,7 +3,7 @@ import AppContext from "../context/AppContext";
 import PetCard from "./PetCard";
 import User from "./User";
 
-import { Stack, SimpleGrid, Button } from "@chakra-ui/react";
+import { Stack, SimpleGrid } from "@chakra-ui/react";
 import {} from "@chakra-ui/icons";
 
 export default function AdminDashboard() {
@@ -13,6 +13,10 @@ export default function AdminDashboard() {
 	const { allPets } = appContext;
 
 	const [allUsers, setAllUsers] = useState();
+
+	useEffect(() => {
+		setAllUsers();
+	}, []);
 
 	return (
 		<>

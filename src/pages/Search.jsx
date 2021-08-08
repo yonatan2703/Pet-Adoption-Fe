@@ -110,7 +110,7 @@ export default function Search() {
 										min={5}
 										defaultValue={5}
 										onChange={(e) => {
-											setPetMinHeight(e.target.value);
+											setPetMinHeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -125,9 +125,9 @@ export default function Search() {
 									<NumberInput
 										max={160}
 										min={5}
-										defaultValue={150}
+										defaultValue={160}
 										onChange={(e) => {
-											setPetMaxHeight(e.target.value);
+											setPetMaxHeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -150,7 +150,7 @@ export default function Search() {
 										min={5}
 										defaultValue={5}
 										onChange={(e) => {
-											setPetMinWeight(e.target.value);
+											setPetMinWeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -167,7 +167,7 @@ export default function Search() {
 										min={5}
 										defaultValue={100}
 										onChange={(e) => {
-											setPetMaxWeight(e.target.value);
+											setPetMaxWeight(e);
 										}}
 									>
 										<NumberInputField />
