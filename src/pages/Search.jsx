@@ -39,7 +39,7 @@ export default function Search() {
 	const handleSearch = () => {
 		const query = { type: petType };
 		if (!searchSimple) {
-			query.adoptionStat = petAdoptionStatus;
+			query.adoptionStatus = petAdoptionStatus;
 			query.name = petName;
 			query.minHeight = petMinHeight;
 			query.maxHeight = petMaxHeight;

@@ -122,7 +122,7 @@ export default function AdminAddPet() {
 							onChange={(e) => {
 								setPet({
 									...pet,
-									adoptionStat: e.target.value,
+									adoptionStatus: e.target.value,
 								});
 							}}
 						>

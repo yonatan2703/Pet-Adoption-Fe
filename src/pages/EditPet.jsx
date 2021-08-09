@@ -136,11 +136,11 @@ export default function EditPet() {
 							<FormLabel>Adoption status</FormLabel>
 							<Select
 								placeholder="Adoption status"
-								defaultValue={pet.adoptionStat}
+								defaultValue={pet.adoptionStatus}
 								onChange={(e) => {
 									setPet({
 										...pet,
-										adoptionStat: e.target.value,
+										adoptionStatus: e.target.value,
 									});
 								}}
 							>
@@ -212,7 +212,7 @@ export default function EditPet() {
 						/>
 					</FormControl>
 					<Button className="mt-3" colorScheme="blue" type="submit">
-						Add Pet
+						Save Pet
 					</Button>
 				</form>
 			)}

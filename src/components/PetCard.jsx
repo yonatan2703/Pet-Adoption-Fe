@@ -20,7 +20,7 @@ export default function PetCard(props) {
 		>
 			<Image src={pet.imageUrl} alt={pet.imageAlt} />
 			<div className="h1 mb-3">{pet.name}</div>
-			<div className="h4 mb-3">Adoption Status: {pet.adoptionStat}</div>
+			<div className="h4 mb-3">Adoption Status: {pet.adoptionStatus}</div>
 			<div className="h3">Bio</div>
 			<div className="h5 p-3 pt-0">{pet.bio}</div>
 			<Link to={link} className="pet-card-link">

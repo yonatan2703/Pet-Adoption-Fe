@@ -51,7 +51,7 @@ export default function PetPage() {
 	}, [savedPets, pet]);
 
 	const handleReturnPet = () => {
-		setPet({ ...pet, ownerId: null, adoptionStat: null });
+		setPet({ ...pet, ownerId: null, adoptionStatus: null });
 		const newArr = myPets.filter((ele) => {
 			return ele.id !== pet.id;
 		});
@@ -71,13 +71,13 @@ export default function PetPage() {
 	};
 
 	const handleAdoptPet = () => {
-		setPet({ ...pet, ownerId: userData.id, adoptionStat: "Adopted" });
+		setPet({ ...pet, ownerId: userData.id, adoptionStatus: "Adopted" });
 		setMyPets([...myPets, pet]);
 		handleUnSavePet();
 	};
 
 	const handleFosterPet = () => {
-		setPet({ ...pet, ownerId: userData.id, adoptionStat: "Fostered" });
+		setPet({ ...pet, ownerId: userData.id, adoptionStatus: "Fostered" });
 		setMyPets([...myPets, pet]);
 		handleUnSavePet();
 	};
@@ -103,7 +103,7 @@ export default function PetPage() {
 							<Box>Height: {pet.height}</Box>
 							<Box>Weight: {pet.weight}</Box>
 							<Box>Breed: {pet.breed}</Box>
-							<Box>Adoption Status: {pet.adoptionStat}</Box>
+							<Box>Adoption Status: {pet.adoptionStatus}</Box>
 							<Box>Hypoallergenic: {pet.hypoallergenic}</Box>
 							<Box>
 								Dietary Restrictions: {pet.dietaryRestrictions}
@@ -122,7 +122,7 @@ export default function PetPage() {
 									>
 										Return Pet
 									</Button>
-									{pet.adoptionStat === "Fostered" ? (
+									{pet.adoptionStatus === "Fostered" ? (
 										<Button
 											colorScheme="blue"
 											onClick={() => {
@@ -147,8 +147,8 @@ export default function PetPage() {
 											? "Save Pet For Later"
 											: "Remove From Saved Pets"}
 									</Button>
-									{pet.adoptionStat ===
-									"Adopted" ? null : pet.adoptionStat ===
+									{pet.adoptionStatus ===
+									"Adopted" ? null : pet.adoptionStatus ===
 									  "Fostered" ? (
 										<Button
 											colorScheme="blue"

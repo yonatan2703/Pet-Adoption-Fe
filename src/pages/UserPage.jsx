@@ -27,7 +27,7 @@ export default function UserPage() {
 	const [petHeight, setPetHeight] = useState();
 	const [petWeight, setPetWeight] = useState();
 	const [petBreed, setPetBreed] = useState();
-	const [petAdoptionStatus, setPetAdoptionStatus] = useState();
+	const [petadoptionStatusus, setPetadoptionStatusus] = useState();
 	const [petHypoallergenic, setPetHypoallergenic] = useState();
 	const [petDietaryRestrictions, setPetDietaryRestrictions] = useState();
 	const [petBio, setPetBio] = useState();
@@ -39,7 +39,7 @@ export default function UserPage() {
 			imageAlt: "No Image Found",
 			type: petType,
 			name: petName,
-			adoptionStat: petAdoptionStatus,
+			adoptionStatus: petadoptionStatusus,
 			height: petHeight,
 			weight: petWeight,
 			color: petColor,
@@ -126,7 +126,7 @@ export default function UserPage() {
 						<Select
 							placeholder="Adoption status"
 							onChange={(e) => {
-								setPetAdoptionStatus(e.target.value);
+								setPetadoptionStatusus(e.target.value);
 							}}
 						>
 							<option>Adopted</option>
