@@ -2,7 +2,7 @@ import * as React from "react";
 import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
 
-import { Redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { Box, Image, SimpleGrid, Button } from "@chakra-ui/react";
 import {} from "@chakra-ui/icons";
@@ -84,7 +84,6 @@ export default function PetPage() {
 
 	return (
 		<>
-			{!userLogged && <Redirect to="/home" />}
 			<NavBar></NavBar>
 			<div className="container mt-3">
 				{pet && (
@@ -93,7 +92,7 @@ export default function PetPage() {
 						borderWidth="3px"
 						borderRadius="lg"
 						overflow="hidden"
-						className="d-flex flex-column align-items-center pb-3"
+						className="d-flex flex-column align-items-center pb-3 mb-3"
 					>
 						<Image src={pet.imageUrl} alt={pet.imageAlt} />
 						<div className="h1 mb-3">{pet.name}</div>
@@ -111,55 +110,19 @@ export default function PetPage() {
 						</SimpleGrid>
 						<div className="h3">Bio</div>
 						<div className="h5 p-3 pt-0">{pet.bio}</div>
-						<div className="buttons">
-							{pet.ownerId === userData.id ? (
-								<>
-									<Button
-										colorScheme="blue"
-										onClick={() => {
-											handleReturnPet();
-										}}
-									>
-										Return Pet
-									</Button>
-									{pet.adoptionStatus === "Fostered" ? (
+						{userLogged && (
+							<div className="buttons">
+								{pet.ownerId === userData.id ? (
+									<>
 										<Button
 											colorScheme="blue"
 											onClick={() => {
-												handleAdoptPet();
+												handleReturnPet();
 											}}
 										>
-											Adopt Pet
+											Return Pet
 										</Button>
-									) : null}
-								</>
-							) : (
-								<>
-									<Button
-										colorScheme="blue"
-										onClick={() => {
-											!petSaved
-												? handleSavePet()
-												: handleUnSavePet();
-										}}
-									>
-										{!petSaved
-											? "Save Pet For Later"
-											: "Remove From Saved Pets"}
-									</Button>
-									{pet.adoptionStatus ===
-									"Adopted" ? null : pet.adoptionStatus ===
-									  "Fostered" ? (
-										<Button
-											colorScheme="blue"
-											onClick={() => {
-												handleAdoptPet();
-											}}
-										>
-											Adopt Pet
-										</Button>
-									) : (
-										<>
+										{pet.adoptionStatus === "Fostered" ? (
 											<Button
 												colorScheme="blue"
 												onClick={() => {
@@ -168,19 +131,57 @@ export default function PetPage() {
 											>
 												Adopt Pet
 											</Button>
+										) : null}
+									</>
+								) : (
+									<>
+										<Button
+											colorScheme="blue"
+											onClick={() => {
+												!petSaved
+													? handleSavePet()
+													: handleUnSavePet();
+											}}
+										>
+											{!petSaved
+												? "Save Pet For Later"
+												: "Remove From Saved Pets"}
+										</Button>
+										{pet.adoptionStatus ===
+										"Adopted" ? null : pet.adoptionStatus ===
+										  "Fostered" ? (
 											<Button
 												colorScheme="blue"
 												onClick={() => {
-													handleFosterPet();
+													handleAdoptPet();
 												}}
 											>
-												Foster Pet
+												Adopt Pet
 											</Button>
-										</>
-									)}
-								</>
-							)}
-						</div>
+										) : (
+											<>
+												<Button
+													colorScheme="blue"
+													onClick={() => {
+														handleAdoptPet();
+													}}
+												>
+													Adopt Pet
+												</Button>
+												<Button
+													colorScheme="blue"
+													onClick={() => {
+														handleFosterPet();
+													}}
+												>
+													Foster Pet
+												</Button>
+											</>
+										)}
+									</>
+								)}
+							</div>
+						)}
 					</Box>
 				)}
 			</div>

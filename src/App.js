@@ -1,7 +1,6 @@
 import "./App.css";
 import * as React from "react";
 // eslint-disable-next-line
-import { v4 as uuidv4 } from "uuid";
 import { ChakraProvider } from "@chakra-ui/react";
 import {
 	BrowserRouter as Router,
@@ -9,6 +8,8 @@ import {
 	Route,
 	Redirect,
 } from "react-router-dom";
+import axios from "axios";
+import localforage from "localforage";
 
 import AppContext from "./context/AppContext";
 import Home from "./pages/Home";
@@ -21,9 +22,10 @@ import EditPet from "./pages/EditPet";
 import UserPage from "./pages/UserPage";
 
 import { myPetsArray, savedPetsArray, allPetsArray } from "./lib/mockData";
+import { loginOnLoad } from "./api/userApi";
 
 function App() {
-	const { useState } = React;
+	const { useState, useEffect } = React;
 
 	const defaultUser = {
 		// id: uuidv4(),
@@ -53,6 +55,24 @@ function App() {
 		"Hamster",
 		"Turtle",
 	]);
+
+	useEffect(() => {
+		try {
+			localforage.getItem("token", async (err, value) => {
+				if (err) {
+					return console.log(err);
+				}
+				axios.defaults.headers.common["Authorization"] = value;
+				const user = await loginOnLoad();
+				console.log(user);
+				if (user.data) {
+					setUserData(user.data);
+				}
+			});
+		} catch (e) {
+			console.log(e);
+		}
+	}, []);
 
 	return (
 		<ChakraProvider>
