@@ -38,13 +38,12 @@ export default function NavBar() {
 							.setItem("token", "")
 							.then(function (value) {
 								// Do other things once the value has been saved.
-								console.log(value);
+								window.location.reload();
 							})
 							.catch(function (err) {
 								// This code runs if there were any errors
 								console.log(err);
 							});
-						window.location.reload();
 					}}
 				>
 					Logout

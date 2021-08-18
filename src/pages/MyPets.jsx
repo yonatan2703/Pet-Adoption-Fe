@@ -2,16 +2,32 @@ import * as React from "react";
 import NavBar from "../components/NavBar";
 import PetCard from "../components/PetCard";
 import AppContext from "../context/AppContext";
+import { getUserPets } from "../api/userApi";
 
+import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
 import { Button, SimpleGrid } from "@chakra-ui/react";
 
 export default function MyPets() {
-	const { useContext } = React;
+	const { useState, useContext, useEffect } = React;
 
 	const appContext = useContext(AppContext);
-	const { userData, myPets, savedPets, togglePets, setTogglePets } =
-		appContext;
+	const { userData, togglePets, setTogglePets } = appContext;
+	const [savedPets, setSavedPets] = useState();
+	const [ownedPets, setOwnedPets] = useState();
+
+	useEffect(() => {
+		if (userData) {
+			getUserPets(userData.user_id)
+				.then((res) => {
+					setOwnedPets(res.data.ownedPets);
+					setSavedPets(res.data.savedPets);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		} // eslint-disable-next-line
+	}, []);
 
 	return (
 		<>
@@ -28,11 +44,15 @@ export default function MyPets() {
 					{togglePets ? "Show My Saved Pets" : "Show My Pets"}
 				</Button>
 				{togglePets ? (
-					myPets && myPets.length ? (
+					ownedPets && ownedPets.length ? (
 						<SimpleGrid columns={4} spacing={5}>
-							{myPets.map((ele) => {
+							{ownedPets.map((ele, i) => {
 								return (
-									<PetCard pet={ele} width={"100%"}></PetCard>
+									<PetCard
+										key={uuidv4()}
+										pet={ele}
+										width={"100%"}
+									></PetCard>
 								);
 							})}
 						</SimpleGrid>
@@ -44,7 +64,13 @@ export default function MyPets() {
 				) : savedPets && savedPets.length ? (
 					<SimpleGrid columns={4} spacing={5}>
 						{savedPets.map((ele) => {
-							return <PetCard pet={ele} width={"100%"}></PetCard>;
+							return (
+								<PetCard
+									key={uuidv4()}
+									pet={ele}
+									width={"100%"}
+								></PetCard>
+							);
 						})}
 					</SimpleGrid>
 				) : (

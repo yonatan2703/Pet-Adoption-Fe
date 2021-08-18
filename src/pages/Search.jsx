@@ -4,6 +4,7 @@ import PetCard from "../components/PetCard";
 import AppContext from "../context/AppContext";
 import { searchPets } from "../api/petApi";
 import { useHistory, useLocation } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 import {
 	Button,
@@ -63,9 +64,13 @@ export default function Search() {
 
 	useEffect(() => {
 		if (location.search) {
-			searchPets(location.search).then((res) => {
-				setSearchResults(res.data);
-			});
+			searchPets(location.search)
+				.then((res) => {
+					setSearchResults(res.data);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		}
 		// eslint-disable-next-line
 	}, []);
@@ -86,12 +91,13 @@ export default function Search() {
 						<FormLabel>Type</FormLabel>
 						<Select
 							placeholder="Type of animal"
+							value={type}
 							onChange={(e) => {
 								setType(e.target.value);
 							}}
 						>
 							{animalTypes.map((ele) => {
-								return <option>{ele}</option>;
+								return <option key={uuidv4()}>{ele}</option>;
 							})}
 						</Select>
 					</FormControl>
@@ -213,7 +219,13 @@ export default function Search() {
 				{searchResults && searchResults.length ? (
 					<SimpleGrid columns={3} spacing={5}>
 						{searchResults.map((ele) => {
-							return <PetCard pet={ele} width={"100%"}></PetCard>;
+							return (
+								<PetCard
+									key={uuidv4()}
+									pet={ele}
+									width={"100%"}
+								></PetCard>
+							);
 						})}
 					</SimpleGrid>
 				) : (

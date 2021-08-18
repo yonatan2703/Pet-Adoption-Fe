@@ -1,186 +1,189 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
+import PetCard from "../components/PetCard";
+import PasswordInput from "../components/PasswordInput";
 import AppContext from "../context/AppContext";
+import { editUser, getAllUserDetails } from "../api/userApi";
 
-import { Redirect } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 import {
-	SimpleGrid,
+	Button,
 	FormControl,
 	FormLabel,
+	Stack,
 	Input,
 	Textarea,
-	Select,
-	Button,
-	Checkbox,
+	SimpleGrid,
 } from "@chakra-ui/react";
-import {} from "@chakra-ui/icons";
 
-export default function UserPage() {
-	const { useContext, useState } = React;
+export default function Search() {
+	const { useState, useEffect, useContext } = React;
 
+	const { id } = useParams();
 	const appContext = useContext(AppContext);
-	const { animalTypes, userData } = appContext;
+	const { userData } = appContext;
 
-	const [petName, setPetName] = useState();
-	const [petType, setPetType] = useState();
-	const [petColor, setPetColor] = useState();
-	const [petHeight, setPetHeight] = useState();
-	const [petWeight, setPetWeight] = useState();
-	const [petBreed, setPetBreed] = useState();
-	const [petadoption_statusus, setPetadoption_statusus] = useState();
-	const [petHypoallergenic, setPetHypoallergenic] = useState();
-	const [petDietaryRestrictions, setPetDietaryRestrictions] = useState();
-	const [petBio, setPetBio] = useState();
-	const [petImage, setPetImage] = useState();
+	const [userSavedPets, setUserSavedPets] = useState();
+	const [userOwnedPets, setUserOwnedPets] = useState();
+	const [togglePets, setTogglePets] = useState(true);
+	const [userDataFromId, setUserDataFromId] = useState();
+	const [password, setPassword] = useState();
+	const [email, setEmail] = useState();
+	const [first_name, setFirst_name] = useState();
+	const [last_name, setLast_name] = useState();
+	const [phone, setPhone] = useState();
+	const [bio, setBio] = useState();
 
-	const handleAddPet = () => {
-		const petToAdd = {
-			image_url: petImage,
-			type: petType,
-			name: petName,
-			adoption_status: petadoption_statusus,
-			height: petHeight,
-			weight: petWeight,
-			color: petColor,
-			bio: petBio,
-			hypoallergenic: petHypoallergenic,
-			dietary_restrictions: petDietaryRestrictions,
-			breed: petBreed,
-		};
-		console.log(petToAdd);
+	const handleSave = async () => {
+		const res = await editUser(userDataFromId.user_id, {
+			email: email,
+			fName: first_name,
+			lName: last_name,
+			phone: phone,
+			bio: bio,
+			password: password,
+		});
+		setUserDataFromId(res.data.user);
 	};
+
+	useEffect(() => {
+		getAllUserDetails(id)
+			.then((res) => {
+				setUserDataFromId(res.data.userData.user);
+				setUserSavedPets(res.data.userPets.ownedPets);
+				setUserOwnedPets(res.data.userPets.ownedPets);
+			})
+			.catch((err) => {
+				console.log(err);
+			}); // eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		if (userDataFromId) {
+			setEmail(userDataFromId.email);
+			setFirst_name(userDataFromId.first_name);
+			setLast_name(userDataFromId.last_name);
+			setPhone(userDataFromId.phone);
+			setBio(userDataFromId.bio);
+		}
+	}, [userDataFromId]);
 
 	return (
 		<>
 			{userData?.role !== "admin" && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<form
-				className="container mt-3"
-				onSubmit={(e) => {
-					e.preventDefault();
-					handleAddPet();
+				className="container"
+				onSubmit={() => {
+					handleSave();
 				}}
 			>
-				<SimpleGrid columns={2} spacing={5} className="width-full">
-					<FormControl id="animal-name" isRequired>
-						<FormLabel>Name</FormLabel>
+				<Stack spacing={3} className="mb-3 mt-3">
+					<FormControl id="user-email" isRequired>
+						<FormLabel>Email</FormLabel>
 						<Input
-							placeholder="Animal name"
-							onChange={(e) => {
-								setPetName(e.target.value);
-							}}
+							defaultValue={email}
+							placeholder="Email"
+							type="email"
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</FormControl>
-					<FormControl isRequired>
-						<FormLabel>Type</FormLabel>
-						<Select
-							placeholder="Type of animal"
-							onChange={(e) => {
-								setPetType(e.target.value);
-							}}
-						>
-							{animalTypes.map((ele) => {
-								return <option>{ele}</option>;
-							})}
-						</Select>
-					</FormControl>
-					<FormControl id="animal-color" isRequired>
-						<FormLabel>Color</FormLabel>
-						<Input
-							placeholder="Animal Color"
-							onChange={(e) => {
-								setPetColor(e.target.value);
-							}}
+					<FormControl id="user-password">
+						<FormLabel>New Password</FormLabel>
+						<PasswordInput
+							text="Password"
+							setPassword={setPassword}
 						/>
 					</FormControl>
-					<FormControl id="animal-height" isRequired>
-						<FormLabel>Height</FormLabel>
+					<FormControl id="user-Fname" isRequired>
+						<FormLabel>First Name</FormLabel>
 						<Input
-							placeholder="Animal Height"
-							onChange={(e) => {
-								setPetHeight(e.target.value);
-							}}
+							placeholder="First name"
+							type="text"
+							defaultValue={first_name}
+							onChange={(e) => setFirst_name(e.target.value)}
 						/>
 					</FormControl>
-					<FormControl id="animal-weight" isRequired>
-						<FormLabel>Weight</FormLabel>
+					<FormControl id="user-Lname" isRequired>
+						<FormLabel>Last Name</FormLabel>
 						<Input
-							placeholder="Animal Weight"
-							onChange={(e) => {
-								setPetWeight(e.target.value);
-							}}
+							placeholder="Last name"
+							type="text"
+							defaultValue={last_name}
+							onChange={(e) => setLast_name(e.target.value)}
 						/>
 					</FormControl>
-					<FormControl id="animal-breed" isRequired>
-						<FormLabel>Breed</FormLabel>
+					<FormControl id="user-phone" isRequired>
+						<FormLabel>Phone Number</FormLabel>
 						<Input
-							placeholder="Animal Breed"
-							onChange={(e) => {
-								setPetBreed(e.target.value);
-							}}
+							placeholder="Phone"
+							type="text"
+							defaultValue={phone}
+							onChange={(e) => setPhone(e.target.value)}
 						/>
 					</FormControl>
-					<FormControl id="adoption-status" isRequired>
-						<FormLabel>Adoption status</FormLabel>
-						<Select
-							placeholder="Adoption status"
-							onChange={(e) => {
-								setPetadoption_statusus(e.target.value);
-							}}
-						>
-							<option>Adopted</option>
-							<option>Fostered</option>
-							<option>Available</option>
-						</Select>
-					</FormControl>
-					<FormControl id="animal-hypoallergenic" isRequired>
-						<FormLabel>Hypoallergenic</FormLabel>
-						<Checkbox>Checkbox</Checkbox>
-						<Input
-							placeholder="Animal Hypoallergenic"
-							onChange={(e) => {
-								setPetHypoallergenic(e.target.value);
-							}}
+					<FormControl id="user-bio" isRequired>
+						<FormLabel>Bio</FormLabel>
+						<Textarea
+							placeholder="Write your bio"
+							type="text"
+							defaultValue={bio}
+							onChange={(e) => setBio(e.target.value)}
 						/>
 					</FormControl>
-					<FormControl id="animal-dietary-restrictions" isRequired>
-						<FormLabel>Dietary Restrictions</FormLabel>
-						<Input
-							placeholder="Animal Dietary Restrictions"
-							onChange={(e) => {
-								setPetDietaryRestrictions(e.target.value);
-							}}
-						/>
-					</FormControl>
-					<FormControl id="animal-image" isRequired>
-						<FormLabel>Image</FormLabel>
-						<Input
-							type="file"
-							onChange={(e) => {
-								setPetImage(e.target.value);
-							}}
-						/>
-					</FormControl>
-				</SimpleGrid>
-				<FormControl
-					id="animal-Bio"
-					className="width-full mt-3"
-					isRequired
-				>
-					<FormLabel>Bio</FormLabel>
-					<Textarea
-						type="textarea"
-						placeholder="Animal Bio"
-						onChange={(e) => {
-							setPetBio(e.target.value);
-						}}
-					/>
-				</FormControl>
-				<Button className="mt-3" colorScheme="blue" type="submit">
-					Add Pet
+				</Stack>
+				<Button colorScheme="blue" type="submit">
+					Save Changes
 				</Button>
 			</form>
+			<div className="container">
+				<Button
+					colorScheme="blue"
+					onClick={() => {
+						setTogglePets(!togglePets);
+					}}
+					className="mt-3"
+				>
+					{togglePets ? "Show My Saved Pets" : "Show My Pets"}
+				</Button>
+				{togglePets ? (
+					userOwnedPets && userOwnedPets.length ? (
+						<SimpleGrid columns={4} spacing={5}>
+							{userOwnedPets.map((ele, i) => {
+								return (
+									<PetCard
+										key={uuidv4()}
+										pet={ele}
+										width={"100%"}
+									></PetCard>
+								);
+							})}
+						</SimpleGrid>
+					) : (
+						<div className="h1">
+							You currently do not own or foster any pets.
+						</div>
+					)
+				) : userSavedPets && userSavedPets.length ? (
+					<SimpleGrid columns={4} spacing={5}>
+						{userSavedPets.map((ele) => {
+							return (
+								<PetCard
+									key={uuidv4()}
+									pet={ele}
+									width={"100%"}
+								></PetCard>
+							);
+						})}
+					</SimpleGrid>
+				) : (
+					<div className="h1">
+						You currently do not have any saved pets.
+					</div>
+				)}
+			</div>
 		</>
 	);
 }

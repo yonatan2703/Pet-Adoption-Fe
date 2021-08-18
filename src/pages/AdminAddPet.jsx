@@ -4,6 +4,7 @@ import AppContext from "../context/AppContext";
 import { addPet, addPetImg } from "../api/petApi";
 
 import { Redirect } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 import {
 	SimpleGrid,
@@ -31,12 +32,11 @@ export default function AdminAddPet() {
 	const [petImg, setPetImg] = useState();
 
 	const handleAddPet = async () => {
-		console.log(pet);
 		try {
 			const res = await addPet(pet);
-			console.log(res);
+			// eslint-disable-next-line
 			const res2 = await addPetImg(res.data.result.insertId, petImg);
-			console.log(res2);
+			setPet();
 		} catch (err) {
 			console.log(err);
 		}
@@ -58,6 +58,7 @@ export default function AdminAddPet() {
 						<FormLabel>Name</FormLabel>
 						<Input
 							placeholder="Animal name"
+							value={pet?.name || ""}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -70,6 +71,7 @@ export default function AdminAddPet() {
 						<FormLabel>Type</FormLabel>
 						<Select
 							placeholder="Type of animal"
+							value={pet?.type || ""}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -78,7 +80,7 @@ export default function AdminAddPet() {
 							}}
 						>
 							{animalTypes.map((ele) => {
-								return <option>{ele}</option>;
+								return <option key={uuidv4()}>{ele}</option>;
 							})}
 						</Select>
 					</FormControl>
@@ -86,6 +88,7 @@ export default function AdminAddPet() {
 						<FormLabel>Color</FormLabel>
 						<Input
 							placeholder="Animal Color"
+							value={pet?.color || ""}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -96,7 +99,11 @@ export default function AdminAddPet() {
 					</FormControl>
 					<FormControl id="animal-height" isRequired>
 						<FormLabel>Height</FormLabel>
-						<NumberInput max={160} min={5}>
+						<NumberInput
+							value={pet?.height || ""}
+							max={160}
+							min={5}
+						>
 							<NumberInputField
 								placeholder="Animal Height"
 								type="number"
@@ -111,7 +118,11 @@ export default function AdminAddPet() {
 					</FormControl>
 					<FormControl id="animal-weight" isRequired>
 						<FormLabel>Weight</FormLabel>
-						<NumberInput max={100} min={5}>
+						<NumberInput
+							value={pet?.weight || ""}
+							max={100}
+							min={5}
+						>
 							<NumberInputField
 								placeholder="Animal Weight"
 								type="number"
@@ -128,6 +139,7 @@ export default function AdminAddPet() {
 						<FormLabel>Breed</FormLabel>
 						<Input
 							placeholder="Animal Breed"
+							value={pet?.breed || ""}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -140,6 +152,7 @@ export default function AdminAddPet() {
 						<FormLabel>Adoption status</FormLabel>
 						<Select
 							placeholder="Adoption status"
+							value={pet?.adoption_status || ""}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -155,6 +168,7 @@ export default function AdminAddPet() {
 					<FormControl id="animal-hypoallergenic" isRequired>
 						<FormLabel>Hypoallergenic</FormLabel>
 						<Checkbox
+							isChecked={pet?.hypoallergenic ? true : false}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -169,6 +183,7 @@ export default function AdminAddPet() {
 						<FormLabel>Dietary Restrictions</FormLabel>
 						<Input
 							placeholder="Animal Dietary Restrictions"
+							value={pet?.dietary_restrictions || ""}
 							onChange={(e) => {
 								setPet({
 									...pet,
@@ -199,6 +214,7 @@ export default function AdminAddPet() {
 					<Textarea
 						type="textarea"
 						placeholder="Animal Bio"
+						value={pet?.bio || ""}
 						onChange={(e) => {
 							setPet({
 								...pet,

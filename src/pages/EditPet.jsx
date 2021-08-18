@@ -4,6 +4,7 @@ import AppContext from "../context/AppContext";
 import { editPet, addPetImg, getPet } from "../api/petApi";
 
 import { Redirect, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 import {
 	SimpleGrid,
@@ -31,10 +32,14 @@ export default function EditPet() {
 	let { id } = useParams();
 
 	useEffect(() => {
-		getPet(id).then((res) => {
-			console.log(res);
-			setPet(res.data.pet);
-		});
+		getPet(id)
+			.then((res) => {
+				console.log(res);
+				setPet(res.data.pet);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		// eslint-disable-next-line
 	}, []);
 
@@ -82,6 +87,7 @@ export default function EditPet() {
 							<FormLabel>Type</FormLabel>
 							<Select
 								placeholder="Type of animal"
+								value={pet.type}
 								onChange={(e) => {
 									console.log(e.target.value);
 									setPet({
@@ -92,13 +98,7 @@ export default function EditPet() {
 							>
 								{animalTypes.map((ele) => {
 									return (
-										<option
-											selected={
-												ele === pet.type && "selected"
-											}
-										>
-											{ele}
-										</option>
+										<option key={uuidv4()}>{ele}</option>
 									);
 								})}
 							</Select>
@@ -159,6 +159,7 @@ export default function EditPet() {
 							<FormLabel>Adoption status</FormLabel>
 							<Select
 								placeholder="Adoption status"
+								value={pet.adoption_status}
 								onChange={(e) => {
 									setPet({
 										...pet,
@@ -166,30 +167,9 @@ export default function EditPet() {
 									});
 								}}
 							>
-								<option
-									selected={
-										pet.adoption_status === "Adopted" &&
-										"selected"
-									}
-								>
-									Adopted
-								</option>
-								<option
-									selected={
-										pet.adoption_status === "Fostered" &&
-										"selected"
-									}
-								>
-									Fostered
-								</option>
-								<option
-									selected={
-										pet.adoption_status === "Available" &&
-										"selected"
-									}
-								>
-									Available
-								</option>
+								<option>Adopted</option>
+								<option>Fostered</option>
+								<option>Available</option>
 							</Select>
 						</FormControl>
 						<FormControl id="animal-hypoallergenic" isRequired>

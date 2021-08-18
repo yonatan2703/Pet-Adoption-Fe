@@ -42,7 +42,6 @@ function LoginModal() {
 			email: email,
 			password: password,
 		});
-		console.log(res);
 		setUserData(res.data.user);
 		localforage
 			.setItem("token", res.data.token)
@@ -130,7 +129,7 @@ function LoginModal() {
 										colorScheme="blue"
 										onClick={async () => {
 											try {
-												const res = await handleLogin();
+												await handleLogin();
 											} catch (err) {}
 										}}
 									>
@@ -199,8 +198,7 @@ function LoginModal() {
 										colorScheme="blue"
 										onClick={async () => {
 											try {
-												const res =
-													await handleSignUp();
+												await handleSignUp();
 											} catch (err) {}
 										}}
 									>

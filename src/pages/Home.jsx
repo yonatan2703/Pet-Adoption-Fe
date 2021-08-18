@@ -35,28 +35,22 @@ export default function Home() {
 						</div>
 					</>
 				) : (
-					<>
-						<div className="mt-4">
-							<SearchIcon w={5} h={5} />
-							<Link to="/search" className="drawer-link">
-								Search Page
-							</Link>
-						</div>
-						<div className="">
-							<ExternalLinkIcon w={5} h={5} />
-							<Link to="/my-pets" className="drawer-link">
-								My Pets Page
-							</Link>
-						</div>
-						{userData?.role === "admin" && (
-							<div className="">
-								<ExternalLinkIcon w={5} h={5} />
-								<Link to="/add-pet" className="drawer-link">
-									Add Pet Page
+					userData?.role !== "admin" && (
+						<>
+							<div className="mt-4">
+								<SearchIcon w={5} h={5} />
+								<Link to="/search" className="drawer-link">
+									Search Page
 								</Link>
 							</div>
-						)}
-					</>
+							<div className="">
+								<ExternalLinkIcon w={5} h={5} />
+								<Link to="/my-pets" className="drawer-link">
+									My Pets Page
+								</Link>
+							</div>
+						</>
+					)
 				)}
 				{userData?.role === "admin" && <AdminDashboard />}
 			</div>

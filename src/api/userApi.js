@@ -4,6 +4,7 @@ const baseUrl = "http://localhost:5050/";
 export const login = async (user) => {
 	try {
 		const result = await axios.post(`${baseUrl}login`, user);
+		axios.defaults.headers.common["Authorization"] = result.data.token;
 		return result;
 	} catch (error) {
 		console.log(error);

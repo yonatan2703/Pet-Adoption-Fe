@@ -1,6 +1,14 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
+import {
+	getPet,
+	isPetSaved,
+	savePet,
+	deleteSavedPet,
+	returnPet,
+	adpotPet,
+} from "../api/petApi";
 
 import { useParams } from "react-router-dom";
 
@@ -11,8 +19,7 @@ export default function PetPage() {
 	const { useContext, useState, useEffect } = React;
 
 	const appContext = useContext(AppContext);
-	const { userData, setSavedPets, setMyPets, savedPets, myPets, allPets } =
-		appContext;
+	const { userData } = appContext;
 
 	const [pet, setPet] = useState();
 	const [petSaved, setPetSaved] = useState(false);
@@ -20,59 +27,81 @@ export default function PetPage() {
 	let { id } = useParams();
 
 	useEffect(() => {
-		const newArr = allPets.filter((ele) => {
-			return ele.id === id;
-		});
-		console.log(newArr[0]);
-		setPet(newArr[0]);
+		getPet(id)
+			.then((res) => {
+				setPet(res.data.pet);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 		// eslint-disable-next-line
 	}, []);
 
-	const idAppearsInArr = (array, ide) => {
-		let check = false;
-		array.forEach((ele) => {
-			if (ele.id === ide) check = true;
-		});
-		return check;
-	};
-
 	useEffect(() => {
 		if (pet) {
-			if (idAppearsInArr(savedPets, pet.id)) setPetSaved(true);
-			else setPetSaved(false);
+			isPetSaved(id)
+				.then((res) => {
+					if (res.data.result) setPetSaved(true);
+					else setPetSaved(false);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		}
-	}, [savedPets, pet]);
+	}, [pet]);
 
-	const handleReturnPet = () => {
-		setPet({ ...pet, ownerId: null, adoption_status: null });
-		const newArr = myPets.filter((ele) => {
-			return ele.id !== pet.id;
-		});
-		setMyPets(newArr);
+	const handleReturnPet = async () => {
+		try {
+			const res = await returnPet(id);
+			if (res.data.result)
+				setPet({ ...pet, ownerId: null, adoption_status: "Available" });
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const handleSavePet = () => {
-		setSavedPets([...savedPets, pet]);
+	const handleSavePet = async () => {
+		try {
+			const res = await savePet(id);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const handleUnSavePet = () => {
-		let newArr;
-		newArr = savedPets.filter((ele) => {
-			return ele.id !== pet.id;
-		});
-		setSavedPets(newArr);
+	const handleUnSavePet = async () => {
+		try {
+			const res = await deleteSavedPet(id);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const handleAdoptPet = () => {
-		setPet({ ...pet, ownerId: userData.id, adoption_status: "Adopted" });
-		setMyPets([...myPets, pet]);
-		handleUnSavePet();
+	const handleAdoptPet = async () => {
+		try {
+			const res = await adpotPet(id, "Adopted");
+			setPet({
+				...pet,
+				ownerId: userData.id,
+				adoption_status: "Adopted",
+			});
+			await handleUnSavePet();
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
-	const handleFosterPet = () => {
-		setPet({ ...pet, ownerId: userData.id, adoption_status: "Fostered" });
-		setMyPets([...myPets, pet]);
-		handleUnSavePet();
+	const handleFosterPet = async () => {
+		try {
+			const res = await adpotPet(id, "Fostered");
+			setPet({
+				...pet,
+				ownerId: userData.id,
+				adoption_status: "Fostered",
+			});
+			await handleUnSavePet();
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -109,8 +138,8 @@ export default function PetPage() {
 									<>
 										<Button
 											colorScheme="blue"
-											onClick={() => {
-												handleReturnPet();
+											onClick={async () => {
+												await handleReturnPet();
 											}}
 										>
 											Return Pet
@@ -118,8 +147,8 @@ export default function PetPage() {
 										{pet.adoption_status === "Fostered" ? (
 											<Button
 												colorScheme="blue"
-												onClick={() => {
-													handleAdoptPet();
+												onClick={async () => {
+													await handleAdoptPet();
 												}}
 											>
 												Adopt Pet
@@ -130,10 +159,10 @@ export default function PetPage() {
 									<>
 										<Button
 											colorScheme="blue"
-											onClick={() => {
+											onClick={async () => {
 												!petSaved
-													? handleSavePet()
-													: handleUnSavePet();
+													? await handleSavePet()
+													: await handleUnSavePet();
 											}}
 										>
 											{!petSaved
@@ -145,8 +174,8 @@ export default function PetPage() {
 										  "Fostered" ? (
 											<Button
 												colorScheme="blue"
-												onClick={() => {
-													handleAdoptPet();
+												onClick={async () => {
+													await handleAdoptPet();
 												}}
 											>
 												Adopt Pet
@@ -155,16 +184,16 @@ export default function PetPage() {
 											<>
 												<Button
 													colorScheme="blue"
-													onClick={() => {
-														handleAdoptPet();
+													onClick={async () => {
+														await handleAdoptPet();
 													}}
 												>
 													Adopt Pet
 												</Button>
 												<Button
 													colorScheme="blue"
-													onClick={() => {
-														handleFosterPet();
+													onClick={async () => {
+														await handleFosterPet();
 													}}
 												>
 													Foster Pet

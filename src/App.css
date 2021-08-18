@@ -99,3 +99,66 @@
 	min-width: 65%;
 	max-width: 65%;
 }
+
+.user-table {
+	width: 80%;
+}
+
+.user-table-title {
+	background-color: gray;
+	color: honeydew;
+}
+
+.user-table-ele {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 35px;
+	margin-top: 0 !important;
+}
+
+.user-table-ele a:hover {
+	color: white !important;
+}
+
+.user-table-ele-child {
+	text-align: center;
+	font-size: 1rem;
+	align-self: center;
+	border: solid black 2px;
+	height: 100% !important;
+	border-radius: 0 !important;
+}
+
+.user-id {
+	flex-basis: 5%;
+}
+
+.user-first-name {
+	flex-basis: 12%;
+}
+
+.user-last-name {
+	flex-basis: 12%;
+}
+
+.user-email {
+	flex-basis: 27%;
+}
+
+.user-phone {
+	flex-basis: 10%;
+}
+
+.user-role {
+	flex-basis: 8%;
+}
+
+.user-link {
+	flex-basis: 13%;
+}
+
+.user-button {
+	flex-basis: 13%;
+}

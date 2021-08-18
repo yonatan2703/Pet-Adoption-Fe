@@ -21,14 +21,12 @@ import AdminAddPet from "./pages/AdminAddPet";
 import EditPet from "./pages/EditPet";
 import UserPage from "./pages/UserPage";
 
-import { savedPetsArray } from "./lib/mockData";
 import { loginOnLoad } from "./api/userApi";
 
 function App() {
 	const { useState, useEffect } = React;
 
 	const [userData, setUserData] = useState();
-	const [savedPets, setSavedPets] = useState(savedPetsArray);
 	const [togglePets, setTogglePets] = useState(true);
 	const [animalTypes, setAnimalTypes] = useState([
 		"Dog",
@@ -47,7 +45,6 @@ function App() {
 				if (value) {
 					axios.defaults.headers.common["Authorization"] = value;
 					const user = await loginOnLoad();
-					console.log(user);
 					if (user) {
 						setUserData(user.data.user);
 					}
@@ -64,8 +61,6 @@ function App() {
 				value={{
 					userData: userData,
 					setUserData: setUserData,
-					savedPets: savedPets,
-					setSavedPets: setSavedPets,
 					togglePets: togglePets,
 					setTogglePets: setTogglePets,
 					animalTypes: animalTypes,
