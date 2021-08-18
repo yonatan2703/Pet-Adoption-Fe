@@ -62,12 +62,12 @@ export default function Search() {
 	};
 
 	useEffect(() => {
-		console.log(location.search);
 		if (location.search) {
 			searchPets(location.search).then((res) => {
 				setSearchResults(res.data);
 			});
 		}
+		// eslint-disable-next-line
 	}, []);
 
 	return (

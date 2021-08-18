@@ -44,7 +44,7 @@ export default function AdminAddPet() {
 
 	return (
 		<>
-			{!userData?.role === "admin" && <Redirect to="/home" />}
+			{userData?.role !== "admin" && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<form
 				className="container mt-3"

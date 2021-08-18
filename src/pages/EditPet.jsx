@@ -54,7 +54,7 @@ export default function EditPet() {
 
 	return (
 		<>
-			{!userData?.role === "admin" && <Redirect to="/home" />}
+			{userData?.role !== "admin" && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			{pet && (
 				<form

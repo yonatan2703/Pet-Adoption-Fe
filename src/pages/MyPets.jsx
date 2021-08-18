@@ -15,7 +15,7 @@ export default function MyPets() {
 
 	return (
 		<>
-			{!userData && <Redirect to="/home" />}
+			{!userData && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<div className="container">
 				<Button
@@ -28,7 +28,7 @@ export default function MyPets() {
 					{togglePets ? "Show My Saved Pets" : "Show My Pets"}
 				</Button>
 				{togglePets ? (
-					myPets.length ? (
+					myPets && myPets.length ? (
 						<SimpleGrid columns={4} spacing={5}>
 							{myPets.map((ele) => {
 								return (
@@ -41,7 +41,7 @@ export default function MyPets() {
 							You currently do not own or foster any pets.
 						</div>
 					)
-				) : savedPets.length ? (
+				) : savedPets && savedPets.length ? (
 					<SimpleGrid columns={4} spacing={5}>
 						{savedPets.map((ele) => {
 							return <PetCard pet={ele} width={"100%"}></PetCard>;

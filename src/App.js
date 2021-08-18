@@ -21,7 +21,7 @@ import AdminAddPet from "./pages/AdminAddPet";
 import EditPet from "./pages/EditPet";
 import UserPage from "./pages/UserPage";
 
-import { myPetsArray, savedPetsArray, allPetsArray } from "./lib/mockData";
+import { savedPetsArray } from "./lib/mockData";
 import { loginOnLoad } from "./api/userApi";
 
 function App() {
@@ -29,8 +29,6 @@ function App() {
 
 	const [userData, setUserData] = useState();
 	const [savedPets, setSavedPets] = useState(savedPetsArray);
-	// eslint-disable-next-line
-	const [allPets, setAllPets] = useState(allPetsArray);
 	const [togglePets, setTogglePets] = useState(true);
 	const [animalTypes, setAnimalTypes] = useState([
 		"Dog",
@@ -46,10 +44,13 @@ function App() {
 				if (err) {
 					return console.log(err);
 				}
-				axios.defaults.headers.common["Authorization"] = value;
-				const user = await loginOnLoad();
-				if (user) {
-					setUserData(user.data.user);
+				if (value) {
+					axios.defaults.headers.common["Authorization"] = value;
+					const user = await loginOnLoad();
+					console.log(user);
+					if (user) {
+						setUserData(user.data.user);
+					}
 				}
 			});
 		} catch (e) {

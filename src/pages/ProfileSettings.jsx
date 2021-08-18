@@ -43,7 +43,7 @@ export default function Search() {
 
 	return (
 		<>
-			{!userData && <Redirect to="/home" />}
+			{!userData && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<form
 				className="container"
