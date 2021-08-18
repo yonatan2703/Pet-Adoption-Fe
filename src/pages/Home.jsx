@@ -10,21 +10,21 @@ export default function Home() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
-	const { userLogged, userData, userAdmin } = appContext;
+	const { userData } = appContext;
 	return (
 		<>
 			<NavBar></NavBar>
 			<div className="container">
-				{userLogged && (
+				{userData && (
 					<div className="main-title">
-						Hello {userAdmin && "Admin"} {userData.firstName}{" "}
-						{userData.lastName}!
+						Hello {userData?.role === "admin" && "Admin"}{" "}
+						{userData.first_name} {userData.last_name}!
 					</div>
 				)}
 				<div className="main-title">
 					Welcome to the pet adoption agency
 				</div>
-				{!userLogged ? (
+				{!userData ? (
 					<>
 						<div className="second-title">
 							Go agead and sign up/login to adopt your pet today
@@ -48,15 +48,17 @@ export default function Home() {
 								My Pets Page
 							</Link>
 						</div>
-						<div className="">
-							<ExternalLinkIcon w={5} h={5} />
-							<Link to="/add-pet" className="drawer-link">
-								Add Pet Page
-							</Link>
-						</div>
+						{userData?.role === "admin" && (
+							<div className="">
+								<ExternalLinkIcon w={5} h={5} />
+								<Link to="/add-pet" className="drawer-link">
+									Add Pet Page
+								</Link>
+							</div>
+						)}
 					</>
 				)}
-				{userAdmin && <AdminDashboard />}
+				{userData?.role === "admin" && <AdminDashboard />}
 			</div>
 		</>
 	);

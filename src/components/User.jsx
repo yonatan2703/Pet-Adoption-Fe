@@ -7,7 +7,7 @@ export default function User(props) {
 	return (
 		<>
 			<Link to={`/user${user.id}`}>
-				{user.firstName} {user.lastName}
+				{user.first_name} {user.last_name}
 			</Link>
 		</>
 	);

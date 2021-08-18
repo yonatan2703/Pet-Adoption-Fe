@@ -1,20 +1,22 @@
 import * as React from "react";
-import AppContext from "../context/AppContext";
 import PetCard from "./PetCard";
 import User from "./User";
+import { searchPets } from "../api/petApi";
 
 import { Stack, SimpleGrid } from "@chakra-ui/react";
 import {} from "@chakra-ui/icons";
 
 export default function AdminDashboard() {
-	const { useContext, useState, useEffect } = React;
-
-	const appContext = useContext(AppContext);
-	const { allPets } = appContext;
+	const { useState, useEffect } = React;
 
 	const [allUsers, setAllUsers] = useState();
+	const [allPets, setAllPets] = useState();
 
 	useEffect(() => {
+		searchPets("").then((res) => {
+			console.log(res.data);
+			setAllPets(res.data);
+		});
 		setAllUsers();
 	}, []);
 

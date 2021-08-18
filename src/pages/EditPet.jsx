@@ -1,6 +1,7 @@
 import * as React from "react";
 import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
+import { editPet, addPetImg, getPet } from "../api/petApi";
 
 import { Redirect, useParams } from "react-router-dom";
 
@@ -12,6 +13,7 @@ import {
 	Textarea,
 	Select,
 	Button,
+	Checkbox,
 } from "@chakra-ui/react";
 import {} from "@chakra-ui/icons";
 
@@ -19,27 +21,40 @@ export default function EditPet() {
 	const { useContext, useState, useEffect } = React;
 
 	const appContext = useContext(AppContext);
-	const { userAdmin, animalTypes, userLogged, allPets } = appContext;
+	const { animalTypes, userData } = appContext;
 
-	const [pet, setPet] = useState();
+	const [pet, setPet] = useState({
+		hypoallergenic: false,
+	});
+	const [petImg, setPetImg] = useState();
 
 	let { id } = useParams();
 
 	useEffect(() => {
-		const newArr = allPets.filter((ele) => {
-			return ele.id === id;
+		getPet(id).then((res) => {
+			console.log(res);
+			setPet(res.data.pet);
 		});
-		setPet(newArr[0]);
 		// eslint-disable-next-line
 	}, []);
 
-	const handleAddPet = () => {
-		console.log(pet);
+	const handleAddPet = async () => {
+		try {
+			const res = await editPet(id, pet);
+			console.log(pet);
+			console.log(res);
+			if (petImg) {
+				const res2 = await addPetImg(id, petImg);
+				console.log(res2);
+			}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
 		<>
-			{!userLogged && !userAdmin && <Redirect to="/home" />}
+			{!userData?.role === "admin" && <Redirect to="/home" />}
 			<NavBar></NavBar>
 			{pet && (
 				<form
@@ -67,8 +82,8 @@ export default function EditPet() {
 							<FormLabel>Type</FormLabel>
 							<Select
 								placeholder="Type of animal"
-								defaultValue={pet.type}
 								onChange={(e) => {
+									console.log(e.target.value);
 									setPet({
 										...pet,
 										type: e.target.value,
@@ -76,7 +91,15 @@ export default function EditPet() {
 								}}
 							>
 								{animalTypes.map((ele) => {
-									return <option>{ele}</option>;
+									return (
+										<option
+											selected={
+												ele === pet.type && "selected"
+											}
+										>
+											{ele}
+										</option>
+									);
 								})}
 							</Select>
 						</FormControl>
@@ -136,31 +159,52 @@ export default function EditPet() {
 							<FormLabel>Adoption status</FormLabel>
 							<Select
 								placeholder="Adoption status"
-								defaultValue={pet.adoptionStatus}
 								onChange={(e) => {
 									setPet({
 										...pet,
-										adoptionStatus: e.target.value,
+										adoption_status: e.target.value,
 									});
 								}}
 							>
-								<option>Adopted</option>
-								<option>Fostered</option>
-								<option>Null</option>
+								<option
+									selected={
+										pet.adoption_status === "Adopted" &&
+										"selected"
+									}
+								>
+									Adopted
+								</option>
+								<option
+									selected={
+										pet.adoption_status === "Fostered" &&
+										"selected"
+									}
+								>
+									Fostered
+								</option>
+								<option
+									selected={
+										pet.adoption_status === "Available" &&
+										"selected"
+									}
+								>
+									Available
+								</option>
 							</Select>
 						</FormControl>
 						<FormControl id="animal-hypoallergenic" isRequired>
 							<FormLabel>Hypoallergenic</FormLabel>
-							<Input
-								placeholder="Animal Hypoallergenic"
-								defaultValue={pet.hypoallergenic}
+							<Checkbox
+								isChecked={pet.hypoallergenic}
 								onChange={(e) => {
 									setPet({
 										...pet,
-										hypoallergenic: e.target.value,
+										hypoallergenic: e.target.checked,
 									});
 								}}
-							/>
+							>
+								Checkbox
+							</Checkbox>
 						</FormControl>
 						<FormControl
 							id="animal-dietary-restrictions"
@@ -169,26 +213,28 @@ export default function EditPet() {
 							<FormLabel>Dietary Restrictions</FormLabel>
 							<Input
 								placeholder="Animal Dietary Restrictions"
-								defaultValue={pet.dietaryRestrictions}
+								defaultValue={pet.dietary_restrictions}
 								onChange={(e) => {
 									setPet({
 										...pet,
-										dietaryRestrictions: e.target.value,
+										dietary_restrictions: e.target.value,
 									});
 								}}
 							/>
 						</FormControl>
-						<FormControl id="animal-image" isRequired>
+						<FormControl id="animal-image">
 							<FormLabel>Image</FormLabel>
 							<Input
 								type="file"
-								// Need to fetch default value
-								// defaultValue={pet.imageUrl}
 								onChange={(e) => {
-									setPet({
-										...pet,
-										imageUrl: e.target.value,
-									});
+									if (e.target.files.length === 0)
+										setPetImg();
+									else {
+										const file = e.target.files[0];
+										const formData = new FormData();
+										formData.append("img", file);
+										setPetImg(formData);
+									}
 								}}
 							/>
 						</FormControl>

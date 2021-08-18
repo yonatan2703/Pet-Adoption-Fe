@@ -64,9 +64,9 @@ export const getUser = async (id) => {
 	}
 };
 
-export const editUser = async (id) => {
+export const editUser = async (id, user) => {
 	try {
-		const result = await axios.put(`${baseUrl}user/${id}`);
+		const result = await axios.put(`${baseUrl}user/${id}`, user);
 		return result;
 	} catch (error) {
 		console.log(error);

@@ -37,11 +37,11 @@ export const editPet = async (id, pet) => {
 	}
 };
 
-export const adpotPet = async (id, adoptionStatus) => {
+export const adpotPet = async (id, adoption_status) => {
 	try {
 		const result = await axios.post(
 			`${baseUrl}pet/${id}/adopt`,
-			adoptionStatus
+			adoption_status
 		);
 		return result;
 	} catch (error) {

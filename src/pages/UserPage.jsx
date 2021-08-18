@@ -12,6 +12,7 @@ import {
 	Textarea,
 	Select,
 	Button,
+	Checkbox,
 } from "@chakra-ui/react";
 import {} from "@chakra-ui/icons";
 
@@ -19,7 +20,7 @@ export default function UserPage() {
 	const { useContext, useState } = React;
 
 	const appContext = useContext(AppContext);
-	const { userAdmin, animalTypes, userLogged } = appContext;
+	const { animalTypes, userData } = appContext;
 
 	const [petName, setPetName] = useState();
 	const [petType, setPetType] = useState();
@@ -27,7 +28,7 @@ export default function UserPage() {
 	const [petHeight, setPetHeight] = useState();
 	const [petWeight, setPetWeight] = useState();
 	const [petBreed, setPetBreed] = useState();
-	const [petadoptionStatusus, setPetadoptionStatusus] = useState();
+	const [petadoption_statusus, setPetadoption_statusus] = useState();
 	const [petHypoallergenic, setPetHypoallergenic] = useState();
 	const [petDietaryRestrictions, setPetDietaryRestrictions] = useState();
 	const [petBio, setPetBio] = useState();
@@ -35,17 +36,16 @@ export default function UserPage() {
 
 	const handleAddPet = () => {
 		const petToAdd = {
-			imageUrl: petImage,
-			imageAlt: "No Image Found",
+			image_url: petImage,
 			type: petType,
 			name: petName,
-			adoptionStatus: petadoptionStatusus,
+			adoption_status: petadoption_statusus,
 			height: petHeight,
 			weight: petWeight,
 			color: petColor,
 			bio: petBio,
 			hypoallergenic: petHypoallergenic,
-			dietaryRestrictions: petDietaryRestrictions,
+			dietary_restrictions: petDietaryRestrictions,
 			breed: petBreed,
 		};
 		console.log(petToAdd);
@@ -53,7 +53,7 @@ export default function UserPage() {
 
 	return (
 		<>
-			{!userLogged && !userAdmin && <Redirect to="/home" />}
+			{!userData?.role === "admin" && <Redirect to="/home" />}
 			<NavBar></NavBar>
 			<form
 				className="container mt-3"
@@ -126,16 +126,17 @@ export default function UserPage() {
 						<Select
 							placeholder="Adoption status"
 							onChange={(e) => {
-								setPetadoptionStatusus(e.target.value);
+								setPetadoption_statusus(e.target.value);
 							}}
 						>
 							<option>Adopted</option>
 							<option>Fostered</option>
-							<option>Null</option>
+							<option>Available</option>
 						</Select>
 					</FormControl>
 					<FormControl id="animal-hypoallergenic" isRequired>
 						<FormLabel>Hypoallergenic</FormLabel>
+						<Checkbox>Checkbox</Checkbox>
 						<Input
 							placeholder="Animal Hypoallergenic"
 							onChange={(e) => {

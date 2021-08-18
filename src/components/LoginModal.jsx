@@ -1,5 +1,6 @@
 import * as React from "react";
 import PasswordInput from "./PasswordInput";
+import localforage from "localforage";
 
 import {
 	Button,
@@ -19,8 +20,52 @@ import {
 	Input,
 } from "@chakra-ui/react";
 
+import { login, signUp } from "../api/userApi";
+import AppContext from "../context/AppContext";
+
 function LoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { useState, useContext } = React;
+
+	const appContext = useContext(AppContext);
+	const { setUserData } = appContext;
+
+	const [email, setEmail] = useState();
+	const [password, setPassword] = useState();
+	const [passwordValidation, setPasswordValidation] = useState();
+	const [first_name, setFirstName] = useState();
+	const [last_name, setLastName] = useState();
+	const [phone, setPhone] = useState();
+
+	const handleLogin = async () => {
+		const res = await login({
+			email: email,
+			password: password,
+		});
+		console.log(res);
+		setUserData(res.data.user);
+		localforage
+			.setItem("token", res.data.token)
+			.then(function (value) {
+				// Do other things once the value has been saved.
+				console.log(value);
+			})
+			.catch(function (err) {
+				// This code runs if there were any errors
+				console.log(err);
+			});
+	};
+	const handleSignUp = async () => {
+		const res = await signUp({
+			email: email,
+			password: password,
+			passwordValidation: passwordValidation,
+			fName: first_name,
+			lName: last_name,
+			phone: phone,
+		});
+		console.log(res);
+	};
 
 	return (
 		<>
@@ -33,8 +78,24 @@ function LoginModal() {
 				<ModalContent>
 					<Tabs>
 						<TabList className="prussian-blue-bc">
-							<Tab className="modal-tab">Login</Tab>
-							<Tab className="modal-tab">Sign Up</Tab>
+							<Tab
+								className="modal-tab"
+								onClick={() => {
+									setPassword();
+									setPasswordValidation();
+								}}
+							>
+								Login
+							</Tab>
+							<Tab
+								className="modal-tab"
+								onClick={() => {
+									setPassword();
+									setPasswordValidation();
+								}}
+							>
+								Sign Up
+							</Tab>
 						</TabList>
 						<TabPanels>
 							<TabPanel>
@@ -47,8 +108,14 @@ function LoginModal() {
 											placeholder="Email Address"
 											size="md"
 											type="email"
+											onChange={(e) => {
+												setEmail(e.target.value);
+											}}
 										/>
-										<PasswordInput text="Password" />
+										<PasswordInput
+											text="Password"
+											setPassword={setPassword}
+										/>
 									</Stack>
 								</ModalBody>
 								<ModalFooter>
@@ -59,7 +126,16 @@ function LoginModal() {
 									>
 										Close
 									</Button>
-									<Button colorScheme="blue">LOGIN</Button>
+									<Button
+										colorScheme="blue"
+										onClick={async () => {
+											try {
+												const res = await handleLogin();
+											} catch (err) {}
+										}}
+									>
+										LOGIN
+									</Button>
 								</ModalFooter>
 							</TabPanel>
 							<TabPanel>
@@ -72,23 +148,41 @@ function LoginModal() {
 											placeholder="Email Address"
 											size="md"
 											type="email"
+											onChange={(e) => {
+												setEmail(e.target.value);
+											}}
 										/>
-										<PasswordInput text="Password" />
-										<PasswordInput text="Retype Password" />
+										<PasswordInput
+											text="Password"
+											setPassword={setPassword}
+										/>
+										<PasswordInput
+											text="Retype Password"
+											setPassword={setPasswordValidation}
+										/>
 										<Input
 											placeholder="First Name"
 											size="md"
 											type="text"
+											onChange={(e) => {
+												setFirstName(e.target.value);
+											}}
 										/>
 										<Input
 											placeholder="Last Name"
 											size="md"
 											type="text"
+											onChange={(e) => {
+												setLastName(e.target.value);
+											}}
 										/>
 										<Input
 											placeholder="Phone Number"
 											size="md"
 											type="tel"
+											onChange={(e) => {
+												setPhone(e.target.value);
+											}}
 										/>
 									</Stack>
 								</ModalBody>
@@ -101,7 +195,17 @@ function LoginModal() {
 									>
 										Close
 									</Button>
-									<Button colorScheme="blue">SIGN UP</Button>
+									<Button
+										colorScheme="blue"
+										onClick={async () => {
+											try {
+												const res =
+													await handleSignUp();
+											} catch (err) {}
+										}}
+									>
+										SIGN UP
+									</Button>
 								</ModalFooter>
 							</TabPanel>
 						</TabPanels>

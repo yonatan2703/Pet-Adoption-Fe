@@ -4,14 +4,11 @@ import AppContext from "../context/AppContext";
 import { Button, InputGroup, Input, InputRightElement } from "@chakra-ui/react";
 
 function PasswordInput(props) {
-	const { useContext, useState } = React;
-
-	const appContext = useContext(AppContext);
-	const { setPassword } = appContext;
+	const { useState } = React;
 
 	const [show, setShow] = useState(false);
 	const handleClick = () => setShow(!show);
-	const { text } = props;
+	const { text, setPassword } = props;
 
 	return (
 		<InputGroup size="md">

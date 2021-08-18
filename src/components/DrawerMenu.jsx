@@ -27,7 +27,7 @@ function DrawerMenu() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
-	const { userLogged, userAdmin } = appContext;
+	const { userData } = appContext;
 
 	return (
 		<>
@@ -63,7 +63,7 @@ function DrawerMenu() {
 								Search
 							</Link>
 						</div>
-						{userLogged && (
+						{userData && (
 							<div>
 								<ExternalLinkIcon w={5} h={5} />
 								<Link to="/my-pets" className="drawer-link">
@@ -71,7 +71,7 @@ function DrawerMenu() {
 								</Link>
 							</div>
 						)}
-						{userLogged && userAdmin && (
+						{userData?.role === "admin" && (
 							<div>
 								<ExternalLinkIcon w={5} h={5} />
 								<Link to="/add-pet" className="drawer-link">
@@ -82,7 +82,7 @@ function DrawerMenu() {
 					</DrawerBody>
 
 					<DrawerFooter>
-						{userLogged && (
+						{userData && (
 							<>
 								<SettingsIcon w={5} h={5} />
 								<Link

@@ -27,24 +27,8 @@ import { loginOnLoad } from "./api/userApi";
 function App() {
 	const { useState, useEffect } = React;
 
-	const defaultUser = {
-		// id: uuidv4(),
-		id: "some_id",
-		email: "email&gmail.com",
-		password: "12345678",
-		firstName: "FirstNa",
-		lastName: "LastNa",
-		phoneNumber: "0501234567",
-		bio: "my bio",
-		admin: false,
-	};
-
-	const [userData, setUserData] = useState(defaultUser);
-	const [userLogged, setUserLogged] = useState(false);
-	const [userAdmin, setUserAdmin] = useState(false);
-	const [password, setPassword] = useState(defaultUser.password);
+	const [userData, setUserData] = useState();
 	const [savedPets, setSavedPets] = useState(savedPetsArray);
-	const [myPets, setMyPets] = useState(myPetsArray);
 	// eslint-disable-next-line
 	const [allPets, setAllPets] = useState(allPetsArray);
 	const [togglePets, setTogglePets] = useState(true);
@@ -64,9 +48,8 @@ function App() {
 				}
 				axios.defaults.headers.common["Authorization"] = value;
 				const user = await loginOnLoad();
-				console.log(user);
-				if (user.data) {
-					setUserData(user.data);
+				if (user) {
+					setUserData(user.data.user);
 				}
 			});
 		} catch (e) {
@@ -80,19 +63,10 @@ function App() {
 				value={{
 					userData: userData,
 					setUserData: setUserData,
-					userLogged: userLogged,
-					setUserLogged: setUserLogged,
-					password: password,
-					setPassword: setPassword,
 					savedPets: savedPets,
 					setSavedPets: setSavedPets,
-					myPets: myPets,
-					setMyPets: setMyPets,
-					allPets: allPets,
 					togglePets: togglePets,
 					setTogglePets: setTogglePets,
-					userAdmin: userAdmin,
-					setUserAdmin: setUserAdmin,
 					animalTypes: animalTypes,
 					setAnimalTypes: setAnimalTypes,
 				}}
@@ -123,8 +97,10 @@ function App() {
 						<Route exact path="/edit-pet/:id">
 							<EditPet />
 						</Route>
+						<Route from="" to="/home">
+							<Redirect to="/home"></Redirect>
+						</Route>
 					</Switch>
-					<Redirect from="/" to="/home" />
 				</Router>
 			</AppContext.Provider>
 		</ChakraProvider>

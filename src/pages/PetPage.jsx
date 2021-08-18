@@ -11,15 +11,8 @@ export default function PetPage() {
 	const { useContext, useState, useEffect } = React;
 
 	const appContext = useContext(AppContext);
-	const {
-		userLogged,
-		userData,
-		setSavedPets,
-		setMyPets,
-		savedPets,
-		myPets,
-		allPets,
-	} = appContext;
+	const { userData, setSavedPets, setMyPets, savedPets, myPets, allPets } =
+		appContext;
 
 	const [pet, setPet] = useState();
 	const [petSaved, setPetSaved] = useState(false);
@@ -51,7 +44,7 @@ export default function PetPage() {
 	}, [savedPets, pet]);
 
 	const handleReturnPet = () => {
-		setPet({ ...pet, ownerId: null, adoptionStatus: null });
+		setPet({ ...pet, ownerId: null, adoption_status: null });
 		const newArr = myPets.filter((ele) => {
 			return ele.id !== pet.id;
 		});
@@ -71,13 +64,13 @@ export default function PetPage() {
 	};
 
 	const handleAdoptPet = () => {
-		setPet({ ...pet, ownerId: userData.id, adoptionStatus: "Adopted" });
+		setPet({ ...pet, ownerId: userData.id, adoption_status: "Adopted" });
 		setMyPets([...myPets, pet]);
 		handleUnSavePet();
 	};
 
 	const handleFosterPet = () => {
-		setPet({ ...pet, ownerId: userData.id, adoptionStatus: "Fostered" });
+		setPet({ ...pet, ownerId: userData.id, adoption_status: "Fostered" });
 		setMyPets([...myPets, pet]);
 		handleUnSavePet();
 	};
@@ -94,7 +87,7 @@ export default function PetPage() {
 						overflow="hidden"
 						className="d-flex flex-column align-items-center pb-3 mb-3"
 					>
-						<Image src={pet.imageUrl} alt={pet.imageAlt} />
+						<Image src={pet.image_url} alt={pet.image_alt} />
 						<div className="h1 mb-3">{pet.name}</div>
 						<SimpleGrid columns={2} spacing={5} className="h5 p-3">
 							<Box>Type: {pet.type}</Box>
@@ -102,15 +95,15 @@ export default function PetPage() {
 							<Box>Height: {pet.height}</Box>
 							<Box>Weight: {pet.weight}</Box>
 							<Box>Breed: {pet.breed}</Box>
-							<Box>Adoption Status: {pet.adoptionStatus}</Box>
+							<Box>Adoption Status: {pet.adoption_status}</Box>
 							<Box>Hypoallergenic: {pet.hypoallergenic}</Box>
 							<Box>
-								Dietary Restrictions: {pet.dietaryRestrictions}
+								Dietary Restrictions: {pet.dietary_restrictions}
 							</Box>
 						</SimpleGrid>
 						<div className="h3">Bio</div>
 						<div className="h5 p-3 pt-0">{pet.bio}</div>
-						{userLogged && (
+						{userData && (
 							<div className="buttons">
 								{pet.ownerId === userData.id ? (
 									<>
@@ -122,7 +115,7 @@ export default function PetPage() {
 										>
 											Return Pet
 										</Button>
-										{pet.adoptionStatus === "Fostered" ? (
+										{pet.adoption_status === "Fostered" ? (
 											<Button
 												colorScheme="blue"
 												onClick={() => {
@@ -147,8 +140,8 @@ export default function PetPage() {
 												? "Save Pet For Later"
 												: "Remove From Saved Pets"}
 										</Button>
-										{pet.adoptionStatus ===
-										"Adopted" ? null : pet.adoptionStatus ===
+										{pet.adoption_status ===
+										"Adopted" ? null : pet.adoption_status ===
 										  "Fostered" ? (
 											<Button
 												colorScheme="blue"

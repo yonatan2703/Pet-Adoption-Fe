@@ -10,12 +10,12 @@ export default function MyPets() {
 	const { useContext } = React;
 
 	const appContext = useContext(AppContext);
-	const { userLogged, myPets, savedPets, togglePets, setTogglePets } =
+	const { userData, myPets, savedPets, togglePets, setTogglePets } =
 		appContext;
 
 	return (
 		<>
-			{!userLogged && <Redirect to="/home" />}
+			{!userData && <Redirect to="/home" />}
 			<NavBar></NavBar>
 			<div className="container">
 				<Button

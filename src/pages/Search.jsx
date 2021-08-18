@@ -2,6 +2,8 @@ import * as React from "react";
 import NavBar from "../components/NavBar";
 import PetCard from "../components/PetCard";
 import AppContext from "../context/AppContext";
+import { searchPets } from "../api/petApi";
+import { useHistory, useLocation } from "react-router-dom";
 
 import {
 	Button,
@@ -19,35 +21,54 @@ import {
 } from "@chakra-ui/react";
 
 export default function Search() {
-	const { useState, useContext } = React;
+	const { useState, useContext, useEffect } = React;
 
 	const appContext = useContext(AppContext);
-	// eslint-disable-next-line
-	const { allPets, animalTypes } = appContext;
+	const { animalTypes } = appContext;
+
+	const location = useLocation();
+	const history = useHistory();
 
 	const [searchSimple, setSearchSimple] = useState(true);
 	const [searchResults, setSearchResults] = useState();
 
-	const [petType, setPetType] = useState();
-	const [petAdoptionStatus, setPetAdoptionStatus] = useState();
-	const [petName, setPetName] = useState();
-	const [petMinHeight, setPetMinHeight] = useState();
-	const [petMaxHeight, setPetMaxHeight] = useState();
-	const [petMinWeight, setPetMinWeight] = useState();
-	const [petMaxWeight, setPetMaxWeight] = useState();
+	const [type, setType] = useState();
+	const [adoption_status, setAdoption_status] = useState();
+	const [name, setName] = useState();
+	const [minHeight, setMinHeight] = useState(5);
+	const [maxHeight, setMaxHeight] = useState(160);
+	const [minWeight, setMinWeight] = useState(5);
+	const [maxWeight, setMaxWeight] = useState(100);
 
-	const handleSearch = () => {
-		const query = { type: petType };
+	const handleSearch = async () => {
+		const searchParams = {};
+		if (type) searchParams.type = type;
 		if (!searchSimple) {
-			query.adoptionStatus = petAdoptionStatus;
-			query.name = petName;
-			query.minHeight = petMinHeight;
-			query.maxHeight = petMaxHeight;
-			query.minWeight = petMinWeight;
-			query.maxWeight = petMaxWeight;
+			if (adoption_status) searchParams.adoption_status = adoption_status;
+			if (name) searchParams.name = name;
+			if (minHeight) searchParams.minHeight = minHeight;
+			if (maxHeight) searchParams.maxHeight = maxHeight;
+			if (minWeight) searchParams.minWeight = minWeight;
+			if (maxWeight) searchParams.maxWeight = maxWeight;
 		}
-		setSearchResults(allPets);
+		const query = "?" + new URLSearchParams(searchParams).toString();
+		history.push({
+			pathname: "/search",
+			search: query,
+		});
+		const res = await searchPets(query);
+		console.log(res.data);
+		setSearchResults(res.data);
 	};
+
+	useEffect(() => {
+		console.log(location.search);
+		if (location.search) {
+			searchPets(location.search).then((res) => {
+				setSearchResults(res.data);
+			});
+		}
+	}, []);
 
 	return (
 		<>
@@ -66,7 +87,7 @@ export default function Search() {
 						<Select
 							placeholder="Type of animal"
 							onChange={(e) => {
-								setPetType(e.target.value);
+								setType(e.target.value);
 							}}
 						>
 							{animalTypes.map((ele) => {
@@ -81,12 +102,12 @@ export default function Search() {
 								<Select
 									placeholder="Adoption status"
 									onChange={(e) => {
-										setPetAdoptionStatus(e.target.value);
+										setAdoption_status(e.target.value);
 									}}
 								>
 									<option>Adopted</option>
 									<option>Fostered</option>
-									<option>Null</option>
+									<option>Available</option>
 								</Select>
 							</FormControl>
 							<FormControl id="animal-name">
@@ -94,7 +115,7 @@ export default function Search() {
 								<Input
 									placeholder="Animal name"
 									onChange={(e) => {
-										setPetName(e.target.value);
+										setName(e.target.value);
 									}}
 								/>
 							</FormControl>
@@ -110,7 +131,7 @@ export default function Search() {
 										min={5}
 										defaultValue={5}
 										onChange={(e) => {
-											setPetMinHeight(e);
+											setMinHeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -127,7 +148,7 @@ export default function Search() {
 										min={5}
 										defaultValue={160}
 										onChange={(e) => {
-											setPetMaxHeight(e);
+											setMaxHeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -150,7 +171,7 @@ export default function Search() {
 										min={5}
 										defaultValue={5}
 										onChange={(e) => {
-											setPetMinWeight(e);
+											setMinWeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -167,7 +188,7 @@ export default function Search() {
 										min={5}
 										defaultValue={100}
 										onChange={(e) => {
-											setPetMaxWeight(e);
+											setMaxWeight(e);
 										}}
 									>
 										<NumberInputField />
@@ -189,12 +210,16 @@ export default function Search() {
 				>
 					Search
 				</Button>
-				{searchResults && searchResults.length && (
+				{searchResults && searchResults.length ? (
 					<SimpleGrid columns={3} spacing={5}>
 						{searchResults.map((ele) => {
 							return <PetCard pet={ele} width={"100%"}></PetCard>;
 						})}
 					</SimpleGrid>
+				) : (
+					searchResults &&
+					searchResults.length === 0 &&
+					"No search results"
 				)}
 			</div>
 		</>
