@@ -1,5 +1,4 @@
 import * as React from "react";
-import AppContext from "../context/AppContext";
 
 import { Button, InputGroup, Input, InputRightElement } from "@chakra-ui/react";
 
@@ -8,7 +7,7 @@ function PasswordInput(props) {
 
 	const [show, setShow] = useState(false);
 	const handleClick = () => setShow(!show);
-	const { text, setPassword } = props;
+	const { text, setRef } = props;
 
 	return (
 		<InputGroup size="md">
@@ -16,9 +15,7 @@ function PasswordInput(props) {
 				pr="4.5rem"
 				type={show ? "text" : "password"}
 				placeholder={text}
-				onChange={(e) => {
-					setPassword(e.target.value);
-				}}
+				ref={setRef}
 			/>
 			<InputRightElement width="4.5rem">
 				<Button h="1.75rem" size="sm" onClick={handleClick}>

@@ -22,35 +22,40 @@ import {
 } from "@chakra-ui/react";
 
 export default function Search() {
-	const { useState, useContext, useEffect } = React;
+	const { useState, useContext, useEffect, useRef } = React;
 
 	const appContext = useContext(AppContext);
-	const { animalTypes } = appContext;
+	const { animalTypes, searchResults, setSearchResults } = appContext;
 
 	const location = useLocation();
 	const history = useHistory();
 
 	const [searchSimple, setSearchSimple] = useState(true);
-	const [searchResults, setSearchResults] = useState();
 
-	const [type, setType] = useState();
-	const [adoption_status, setAdoption_status] = useState();
-	const [name, setName] = useState();
-	const [minHeight, setMinHeight] = useState(5);
-	const [maxHeight, setMaxHeight] = useState(160);
-	const [minWeight, setMinWeight] = useState(5);
-	const [maxWeight, setMaxWeight] = useState(100);
+	const typeRef = useRef();
+	const adoption_statusRef = useRef();
+	const nameRef = useRef();
+	const minHeightRef = useRef();
+	const maxHeightRef = useRef();
+	const minWeightRef = useRef();
+	const maxWeightRef = useRef();
 
 	const handleSearch = async () => {
 		const searchParams = {};
-		if (type) searchParams.type = type;
+		if (typeRef.current.value) searchParams.type = typeRef.current.value;
 		if (!searchSimple) {
-			if (adoption_status) searchParams.adoption_status = adoption_status;
-			if (name) searchParams.name = name;
-			if (minHeight) searchParams.minHeight = minHeight;
-			if (maxHeight) searchParams.maxHeight = maxHeight;
-			if (minWeight) searchParams.minWeight = minWeight;
-			if (maxWeight) searchParams.maxWeight = maxWeight;
+			if (adoption_statusRef.current.value)
+				searchParams.adoption_status = adoption_statusRef.current.value;
+			if (nameRef.current.value)
+				searchParams.name = nameRef.current.value;
+			if (minHeightRef.current.value)
+				searchParams.minHeight = minHeightRef.current.value;
+			if (maxHeightRef.current.value)
+				searchParams.maxHeight = maxHeightRef.current.value;
+			if (minWeightRef.current.value)
+				searchParams.minWeight = minWeightRef.current.value;
+			if (maxWeightRef.current.value)
+				searchParams.maxWeight = maxWeightRef.current.value;
 		}
 		const query = "?" + new URLSearchParams(searchParams).toString();
 		history.push({
@@ -89,15 +94,9 @@ export default function Search() {
 				<Stack spacing={3} className="mb-3">
 					<FormControl id="animal-type">
 						<FormLabel>Type</FormLabel>
-						<Select
-							placeholder="Type of animal"
-							value={type}
-							onChange={(e) => {
-								setType(e.target.value);
-							}}
-						>
+						<Select placeholder="Type of animal" ref={typeRef}>
 							{animalTypes.map((ele) => {
-								return <option key={uuidv4()}>{ele}</option>;
+								return <option>{ele}</option>;
 							})}
 						</Select>
 					</FormControl>
@@ -107,9 +106,7 @@ export default function Search() {
 								<FormLabel>Adoption status</FormLabel>
 								<Select
 									placeholder="Adoption status"
-									onChange={(e) => {
-										setAdoption_status(e.target.value);
-									}}
+									ref={adoption_statusRef}
 								>
 									<option>Adopted</option>
 									<option>Fostered</option>
@@ -120,9 +117,7 @@ export default function Search() {
 								<FormLabel>Name</FormLabel>
 								<Input
 									placeholder="Animal name"
-									onChange={(e) => {
-										setName(e.target.value);
-									}}
+									ref={nameRef}
 								/>
 							</FormControl>
 							<Stack
@@ -133,12 +128,10 @@ export default function Search() {
 								<FormControl id="min-height">
 									<FormLabel>Min height in CM</FormLabel>
 									<NumberInput
+										ref={minHeightRef}
 										max={160}
 										min={5}
 										defaultValue={5}
-										onChange={(e) => {
-											setMinHeight(e);
-										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -150,12 +143,10 @@ export default function Search() {
 								<FormControl id="max-height">
 									<FormLabel>Max height in CM</FormLabel>
 									<NumberInput
+										ref={maxHeightRef}
 										max={160}
 										min={5}
 										defaultValue={160}
-										onChange={(e) => {
-											setMaxHeight(e);
-										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -173,12 +164,10 @@ export default function Search() {
 								<FormControl id="min-weight">
 									<FormLabel>Min weight in KG</FormLabel>
 									<NumberInput
+										ref={minWeightRef}
 										max={100}
 										min={5}
 										defaultValue={5}
-										onChange={(e) => {
-											setMinWeight(e);
-										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>
@@ -190,12 +179,10 @@ export default function Search() {
 								<FormControl id="max-weight">
 									<FormLabel>Max weight in KG</FormLabel>
 									<NumberInput
+										ref={maxWeightRef}
 										max={100}
 										min={5}
 										defaultValue={100}
-										onChange={(e) => {
-											setMaxWeight(e);
-										}}
 									>
 										<NumberInputField />
 										<NumberInputStepper>

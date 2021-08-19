@@ -25,23 +25,28 @@ import AppContext from "../context/AppContext";
 
 function LoginModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { useState, useContext } = React;
+	const { useContext, useRef } = React;
 
 	const appContext = useContext(AppContext);
 	const { setUserData } = appContext;
 
-	const [email, setEmail] = useState();
-	const [password, setPassword] = useState();
-	const [passwordValidation, setPasswordValidation] = useState();
-	const [first_name, setFirstName] = useState();
-	const [last_name, setLastName] = useState();
-	const [phone, setPhone] = useState();
+	const loginEmailRef = useRef();
+	const loginPasswordRef = useRef();
+	const emailRef = useRef();
+	const passwordRef = useRef();
+	const passwordValidationRef = useRef();
+	const first_nameRef = useRef();
+	const last_nameRef = useRef();
+	const phoneRef = useRef();
 
 	const handleLogin = async () => {
+		console.log(emailRef);
+		console.log(passwordRef);
 		const res = await login({
-			email: email,
-			password: password,
+			email: loginEmailRef.current.value,
+			password: loginPasswordRef.current.value,
 		});
+		console.log(res);
 		setUserData(res.data.user);
 		localforage
 			.setItem("token", res.data.token)
@@ -55,15 +60,19 @@ function LoginModal() {
 			});
 	};
 	const handleSignUp = async () => {
-		const res = await signUp({
-			email: email,
-			password: password,
-			passwordValidation: passwordValidation,
-			fName: first_name,
-			lName: last_name,
-			phone: phone,
-		});
-		console.log(res);
+		try {
+			const res = await signUp({
+				email: emailRef.current.value,
+				password: passwordRef.current.value,
+				passwordValidation: passwordValidationRef.current.value,
+				fName: first_nameRef.current.value,
+				lName: last_nameRef.current.value,
+				phone: phoneRef.current.value,
+			});
+			console.log(res);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (
@@ -77,24 +86,8 @@ function LoginModal() {
 				<ModalContent>
 					<Tabs>
 						<TabList className="prussian-blue-bc">
-							<Tab
-								className="modal-tab"
-								onClick={() => {
-									setPassword();
-									setPasswordValidation();
-								}}
-							>
-								Login
-							</Tab>
-							<Tab
-								className="modal-tab"
-								onClick={() => {
-									setPassword();
-									setPasswordValidation();
-								}}
-							>
-								Sign Up
-							</Tab>
+							<Tab className="modal-tab">Login</Tab>
+							<Tab className="modal-tab">Sign Up</Tab>
 						</TabList>
 						<TabPanels>
 							<TabPanel>
@@ -105,15 +98,13 @@ function LoginModal() {
 									<Stack spacing={3} className="mt-3 mb-3">
 										<Input
 											placeholder="Email Address"
+											ref={loginEmailRef}
 											size="md"
 											type="email"
-											onChange={(e) => {
-												setEmail(e.target.value);
-											}}
 										/>
 										<PasswordInput
 											text="Password"
-											setPassword={setPassword}
+											setRef={loginPasswordRef}
 										/>
 									</Stack>
 								</ModalBody>
@@ -130,7 +121,9 @@ function LoginModal() {
 										onClick={async () => {
 											try {
 												await handleLogin();
-											} catch (err) {}
+											} catch (err) {
+												console.log(err);
+											}
 										}}
 									>
 										LOGIN
@@ -145,43 +138,35 @@ function LoginModal() {
 									<Stack spacing={3} className="mt-3 mb-3">
 										<Input
 											placeholder="Email Address"
+											ref={emailRef}
 											size="md"
 											type="email"
-											onChange={(e) => {
-												setEmail(e.target.value);
-											}}
 										/>
 										<PasswordInput
 											text="Password"
-											setPassword={setPassword}
+											setRef={passwordRef}
 										/>
 										<PasswordInput
 											text="Retype Password"
-											setPassword={setPasswordValidation}
+											setRef={passwordValidationRef}
 										/>
 										<Input
 											placeholder="First Name"
+											ref={first_nameRef}
 											size="md"
 											type="text"
-											onChange={(e) => {
-												setFirstName(e.target.value);
-											}}
 										/>
 										<Input
 											placeholder="Last Name"
+											ref={last_nameRef}
 											size="md"
 											type="text"
-											onChange={(e) => {
-												setLastName(e.target.value);
-											}}
 										/>
 										<Input
 											placeholder="Phone Number"
+											ref={phoneRef}
 											size="md"
 											type="tel"
-											onChange={(e) => {
-												setPhone(e.target.value);
-											}}
 										/>
 									</Stack>
 								</ModalBody>

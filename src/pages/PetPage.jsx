@@ -27,34 +27,41 @@ export default function PetPage() {
 	let { id } = useParams();
 
 	useEffect(() => {
-		getPet(id)
-			.then((res) => {
-				setPet(res.data.pet);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		if (userData) {
+			getPet(id)
+				.then((res) => {
+					setPet(res.data.pet);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
 		// eslint-disable-next-line
-	}, []);
+	}, [userData]);
 
 	useEffect(() => {
 		if (pet) {
 			isPetSaved(id)
 				.then((res) => {
+					console.log(res);
 					if (res.data.result) setPetSaved(true);
 					else setPetSaved(false);
 				})
 				.catch((err) => {
 					console.log(err);
 				});
-		}
+		} // eslint-disable-next-line
 	}, [pet]);
 
 	const handleReturnPet = async () => {
 		try {
 			const res = await returnPet(id);
 			if (res.data.result)
-				setPet({ ...pet, ownerId: null, adoption_status: "Available" });
+				setPet({
+					...pet,
+					owner_id: null,
+					adoption_status: "Available",
+				});
 		} catch (err) {
 			console.log(err);
 		}
@@ -63,6 +70,7 @@ export default function PetPage() {
 	const handleSavePet = async () => {
 		try {
 			const res = await savePet(id);
+			setPetSaved(!petSaved);
 		} catch (err) {
 			console.log(err);
 		}
@@ -71,6 +79,7 @@ export default function PetPage() {
 	const handleUnSavePet = async () => {
 		try {
 			const res = await deleteSavedPet(id);
+			setPetSaved(!petSaved);
 		} catch (err) {
 			console.log(err);
 		}
@@ -81,7 +90,7 @@ export default function PetPage() {
 			const res = await adpotPet(id, "Adopted");
 			setPet({
 				...pet,
-				ownerId: userData.id,
+				owner_id: userData.user_id,
 				adoption_status: "Adopted",
 			});
 			await handleUnSavePet();
@@ -95,7 +104,7 @@ export default function PetPage() {
 			const res = await adpotPet(id, "Fostered");
 			setPet({
 				...pet,
-				ownerId: userData.id,
+				owner_id: userData.user_id,
 				adoption_status: "Fostered",
 			});
 			await handleUnSavePet();
@@ -134,7 +143,7 @@ export default function PetPage() {
 						<div className="h5 p-3 pt-0">{pet.bio}</div>
 						{userData && (
 							<div className="buttons">
-								{pet.ownerId === userData.id ? (
+								{pet.owner_id === userData.user_id ? (
 									<>
 										<Button
 											colorScheme="blue"
@@ -144,7 +153,7 @@ export default function PetPage() {
 										>
 											Return Pet
 										</Button>
-										{pet.adoption_status === "Fostered" ? (
+										{pet.adoption_status === "Fostered" && (
 											<Button
 												colorScheme="blue"
 												onClick={async () => {
@@ -153,7 +162,7 @@ export default function PetPage() {
 											>
 												Adopt Pet
 											</Button>
-										) : null}
+										)}
 									</>
 								) : (
 									<>

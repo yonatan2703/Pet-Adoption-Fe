@@ -16,27 +16,26 @@ import {
 } from "@chakra-ui/react";
 
 export default function Search() {
-	const { useState, useContext } = React;
+	const { useContext, useRef } = React;
 
 	const appContext = useContext(AppContext);
-	// eslint-disable-next-line
 	const { userData, setUserData } = appContext;
 
-	const [password, setPassword] = useState();
-	const [email, setEmail] = useState(userData?.email);
-	const [first_name, setFirst_name] = useState(userData?.first_name);
-	const [last_name, setLast_name] = useState(userData?.last_name);
-	const [phone, setPhone] = useState(userData?.phone);
-	const [bio, setBio] = useState(userData?.bio);
+	const passwordRef = useRef();
+	const emailRef = useRef();
+	const first_nameRef = useRef();
+	const last_nameRef = useRef();
+	const phoneRef = useRef();
+	const bioRef = useRef();
 
 	const handleSave = async () => {
 		const res = await editUser(userData.user_id, {
-			email: email,
-			fName: first_name,
-			lName: last_name,
-			phone: phone,
-			bio: bio,
-			password: password,
+			email: emailRef.current.value,
+			fName: first_nameRef.current.value,
+			lName: last_nameRef.current.value,
+			phone: phoneRef.current.value,
+			bio: bioRef.current.value,
+			password: passwordRef?.current?.value,
 		});
 		setUserData(res.data.user);
 	};
@@ -47,61 +46,59 @@ export default function Search() {
 			<NavBar></NavBar>
 			<form
 				className="container"
-				onSubmit={() => {
-					handleSave();
+				onSubmit={async (e) => {
+					e.preventDefault();
+					await handleSave();
 				}}
 			>
 				<Stack spacing={3} className="mb-3 mt-3">
 					<FormControl id="user-email" isRequired>
 						<FormLabel>Email</FormLabel>
 						<Input
-							defaultValue={email}
+							defaultValue={userData?.email}
+							ref={emailRef}
 							placeholder="Email"
 							type="email"
-							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</FormControl>
 					<FormControl id="user-password">
 						<FormLabel>New Password</FormLabel>
-						<PasswordInput
-							text="Password"
-							setPassword={setPassword}
-						/>
+						<PasswordInput text="Password" setRef={passwordRef} />
 					</FormControl>
 					<FormControl id="user-Fname" isRequired>
 						<FormLabel>First Name</FormLabel>
 						<Input
 							placeholder="First name"
+							ref={first_nameRef}
 							type="text"
-							defaultValue={first_name}
-							onChange={(e) => setFirst_name(e.target.value)}
+							defaultValue={userData?.first_name}
 						/>
 					</FormControl>
 					<FormControl id="user-Lname" isRequired>
 						<FormLabel>Last Name</FormLabel>
 						<Input
 							placeholder="Last name"
+							ref={last_nameRef}
 							type="text"
-							defaultValue={last_name}
-							onChange={(e) => setLast_name(e.target.value)}
+							defaultValue={userData?.last_name}
 						/>
 					</FormControl>
 					<FormControl id="user-phone" isRequired>
 						<FormLabel>Phone Number</FormLabel>
 						<Input
 							placeholder="Phone"
+							ref={phoneRef}
 							type="text"
-							defaultValue={phone}
-							onChange={(e) => setPhone(e.target.value)}
+							defaultValue={userData?.phone}
 						/>
 					</FormControl>
 					<FormControl id="user-bio" isRequired>
 						<FormLabel>Bio</FormLabel>
 						<Textarea
 							placeholder="Write your bio"
+							ref={bioRef}
 							type="text"
-							defaultValue={bio}
-							onChange={(e) => setBio(e.target.value)}
+							defaultValue={userData?.bio}
 						/>
 					</FormControl>
 				</Stack>

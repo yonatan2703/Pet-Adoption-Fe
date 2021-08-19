@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function Search() {
-	const { useState, useEffect, useContext } = React;
+	const { useState, useEffect, useContext, useRef } = React;
 
 	const { id } = useParams();
 	const appContext = useContext(AppContext);
@@ -29,21 +29,22 @@ export default function Search() {
 	const [userOwnedPets, setUserOwnedPets] = useState();
 	const [togglePets, setTogglePets] = useState(true);
 	const [userDataFromId, setUserDataFromId] = useState();
-	const [password, setPassword] = useState();
-	const [email, setEmail] = useState();
-	const [first_name, setFirst_name] = useState();
-	const [last_name, setLast_name] = useState();
-	const [phone, setPhone] = useState();
-	const [bio, setBio] = useState();
+
+	const passwordRef = useRef();
+	const emailRef = useRef();
+	const first_nameRef = useRef();
+	const last_nameRef = useRef();
+	const phoneRef = useRef();
+	const bioRef = useRef();
 
 	const handleSave = async () => {
 		const res = await editUser(userDataFromId.user_id, {
-			email: email,
-			fName: first_name,
-			lName: last_name,
-			phone: phone,
-			bio: bio,
-			password: password,
+			email: emailRef.current.value,
+			fName: first_nameRef.current.value,
+			lName: last_nameRef.current.value,
+			phone: phoneRef.current.value,
+			bio: bioRef.current.value,
+			password: passwordRef?.current?.value,
 		});
 		setUserDataFromId(res.data.user);
 	};
@@ -52,7 +53,7 @@ export default function Search() {
 		getAllUserDetails(id)
 			.then((res) => {
 				setUserDataFromId(res.data.userData.user);
-				setUserSavedPets(res.data.userPets.ownedPets);
+				setUserSavedPets(res.data.userPets.savedPets);
 				setUserOwnedPets(res.data.userPets.ownedPets);
 			})
 			.catch((err) => {
@@ -60,77 +61,65 @@ export default function Search() {
 			}); // eslint-disable-next-line
 	}, []);
 
-	useEffect(() => {
-		if (userDataFromId) {
-			setEmail(userDataFromId.email);
-			setFirst_name(userDataFromId.first_name);
-			setLast_name(userDataFromId.last_name);
-			setPhone(userDataFromId.phone);
-			setBio(userDataFromId.bio);
-		}
-	}, [userDataFromId]);
-
 	return (
 		<>
 			{userData?.role !== "admin" && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<form
 				className="container"
-				onSubmit={() => {
-					handleSave();
+				onSubmit={async (e) => {
+					e.preventDefault();
+					await handleSave();
 				}}
 			>
 				<Stack spacing={3} className="mb-3 mt-3">
 					<FormControl id="user-email" isRequired>
 						<FormLabel>Email</FormLabel>
 						<Input
-							defaultValue={email}
+							defaultValue={userDataFromId?.email}
+							ref={emailRef}
 							placeholder="Email"
 							type="email"
-							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</FormControl>
 					<FormControl id="user-password">
 						<FormLabel>New Password</FormLabel>
-						<PasswordInput
-							text="Password"
-							setPassword={setPassword}
-						/>
+						<PasswordInput text="Password" setRef={passwordRef} />
 					</FormControl>
 					<FormControl id="user-Fname" isRequired>
 						<FormLabel>First Name</FormLabel>
 						<Input
 							placeholder="First name"
+							ref={first_nameRef}
 							type="text"
-							defaultValue={first_name}
-							onChange={(e) => setFirst_name(e.target.value)}
+							defaultValue={userDataFromId?.first_name}
 						/>
 					</FormControl>
 					<FormControl id="user-Lname" isRequired>
 						<FormLabel>Last Name</FormLabel>
 						<Input
 							placeholder="Last name"
+							ref={last_nameRef}
 							type="text"
-							defaultValue={last_name}
-							onChange={(e) => setLast_name(e.target.value)}
+							defaultValue={userDataFromId?.last_name}
 						/>
 					</FormControl>
 					<FormControl id="user-phone" isRequired>
 						<FormLabel>Phone Number</FormLabel>
 						<Input
 							placeholder="Phone"
+							ref={phoneRef}
 							type="text"
-							defaultValue={phone}
-							onChange={(e) => setPhone(e.target.value)}
+							defaultValue={userDataFromId?.phone}
 						/>
 					</FormControl>
 					<FormControl id="user-bio" isRequired>
 						<FormLabel>Bio</FormLabel>
 						<Textarea
 							placeholder="Write your bio"
+							ref={bioRef}
 							type="text"
-							defaultValue={bio}
-							onChange={(e) => setBio(e.target.value)}
+							defaultValue={userDataFromId?.bio}
 						/>
 					</FormControl>
 				</Stack>

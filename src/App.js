@@ -28,6 +28,7 @@ function App() {
 
 	const [userData, setUserData] = useState();
 	const [togglePets, setTogglePets] = useState(true);
+	const [searchResults, setSearchResults] = useState();
 	const [animalTypes, setAnimalTypes] = useState([
 		"Dog",
 		"Cat",
@@ -65,6 +66,8 @@ function App() {
 					setTogglePets: setTogglePets,
 					animalTypes: animalTypes,
 					setAnimalTypes: setAnimalTypes,
+					searchResults: searchResults,
+					setSearchResults: setSearchResults,
 				}}
 			>
 				<Router>
