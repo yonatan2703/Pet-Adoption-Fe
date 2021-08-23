@@ -22,8 +22,8 @@ import EditPet from "./pages/EditPet";
 import UserPage from "./pages/UserPage";
 
 import { loginOnLoad } from "./api/userApi";
-
 function App() {
+	require("dotenv").config();
 	const { useState, useEffect } = React;
 
 	const [userData, setUserData] = useState();

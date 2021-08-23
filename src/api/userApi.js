@@ -1,7 +1,8 @@
 import axios from "axios";
-const baseUrl = process.env.BE_URL;
+const baseUrl = "https://pet-shop-y-be.herokuapp.com/";
 
 export const login = async (user) => {
+	console.log(baseUrl);
 	try {
 		const result = await axios.post(`${baseUrl}login`, user);
 		axios.defaults.headers.common["Authorization"] = result.data.token;

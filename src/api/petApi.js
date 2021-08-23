@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = process.env.BE_URL;
+const baseUrl = "https://pet-shop-y-be.herokuapp.com/";
 
 export const addPet = async (pet) => {
 	try {
