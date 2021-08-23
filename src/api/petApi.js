@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:5050/";
+const baseUrl = "https://pet-shop-y.herokuapp.com/";
 
 export const addPet = async (pet) => {
 	try {
