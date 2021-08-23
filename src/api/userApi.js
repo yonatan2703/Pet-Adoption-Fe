@@ -57,7 +57,7 @@ export const getAllUsers = async () => {
 	}
 };
 
-export const getUser = async (id) => {
+export const getUserById = async (id) => {
 	try {
 		const result = await axios.get(`${baseUrl}user/${id}`);
 		return result;
@@ -66,9 +66,27 @@ export const getUser = async (id) => {
 	}
 };
 
-export const editUser = async (id, user) => {
+export const getUser = async () => {
+	try {
+		const result = await axios.get(`${baseUrl}user`);
+		return result;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const editUserById = async (id, user) => {
 	try {
 		const result = await axios.put(`${baseUrl}user/${id}`, user);
+		return result;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const editUser = async (user) => {
+	try {
+		const result = await axios.put(`${baseUrl}user`, user);
 		return result;
 	} catch (error) {
 		console.log(error);
@@ -84,9 +102,27 @@ export const getAllUserDetails = async (id) => {
 	}
 };
 
+export const getAllMyDetails = async () => {
+	try {
+		const result = await axios.get(`${baseUrl}user/full`);
+		return result;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 export const getUserPets = async (id) => {
 	try {
 		const result = await axios.get(`${baseUrl}pet/user/${id}`);
+		return result;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const getMyPets = async () => {
+	try {
+		const result = await axios.get(`${baseUrl}pet/user`);
 		return result;
 	} catch (error) {
 		console.log(error);

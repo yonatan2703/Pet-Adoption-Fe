@@ -2,7 +2,7 @@ import * as React from "react";
 import NavBar from "../components/NavBar";
 import PetCard from "../components/PetCard";
 import AppContext from "../context/AppContext";
-import { getUserPets } from "../api/userApi";
+import { getMyPets } from "../api/userApi";
 
 import { v4 as uuidv4 } from "uuid";
 import { Redirect } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function MyPets() {
 
 	useEffect(() => {
 		if (userData) {
-			getUserPets(userData.user_id)
+			getMyPets(userData.user_id)
 				.then((res) => {
 					setOwnedPets(res.data.ownedPets);
 					setSavedPets(res.data.savedPets);

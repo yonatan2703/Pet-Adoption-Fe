@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import PetCard from "../components/PetCard";
 import PasswordInput from "../components/PasswordInput";
 import AppContext from "../context/AppContext";
-import { editUser, getAllUserDetails } from "../api/userApi";
+import { editUserById, getAllUserDetails } from "../api/userApi";
 
 import { Redirect, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -38,7 +38,7 @@ export default function Search() {
 	const bioRef = useRef();
 
 	const handleSave = async () => {
-		const res = await editUser(userDataFromId.user_id, {
+		const res = await editUserById(userDataFromId.user_id, {
 			email: emailRef.current.value,
 			fName: first_nameRef.current.value,
 			lName: last_nameRef.current.value,
