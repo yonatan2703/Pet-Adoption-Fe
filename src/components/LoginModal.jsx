@@ -40,24 +40,15 @@ function LoginModal() {
 	const phoneRef = useRef();
 
 	const handleLogin = async () => {
-		console.log(emailRef);
-		console.log(passwordRef);
 		const res = await login({
 			email: loginEmailRef.current.value,
 			password: loginPasswordRef.current.value,
 		});
-		console.log(res);
 		setUserData(res.data.user);
-		localforage
-			.setItem("token", res.data.token)
-			.then(function (value) {
-				// Do other things once the value has been saved.
-				console.log(value);
-			})
-			.catch(function (err) {
-				// This code runs if there were any errors
-				console.log(err);
-			});
+		localforage.setItem("token", res.data.token).catch(function (err) {
+			// This code runs if there were any errors
+			console.log(err);
+		});
 	};
 	const handleSignUp = async () => {
 		try {
@@ -69,7 +60,6 @@ function LoginModal() {
 				lName: last_nameRef.current.value,
 				phone: phoneRef.current.value,
 			});
-			console.log(res);
 		} catch (err) {
 			console.log(err);
 		}

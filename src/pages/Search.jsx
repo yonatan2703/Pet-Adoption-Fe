@@ -63,8 +63,7 @@ export default function Search() {
 			search: query,
 		});
 		const res = await searchPets(query);
-		console.log(res.data);
-		setSearchResults(res.data);
+		setSearchResults(res?.data);
 	};
 
 	useEffect(() => {
@@ -128,12 +127,11 @@ export default function Search() {
 								<FormControl id="min-height">
 									<FormLabel>Min height in CM</FormLabel>
 									<NumberInput
-										ref={minHeightRef}
 										max={160}
 										min={5}
 										defaultValue={5}
 									>
-										<NumberInputField />
+										<NumberInputField ref={minHeightRef} />
 										<NumberInputStepper>
 											<NumberIncrementStepper />
 											<NumberDecrementStepper />
@@ -143,12 +141,11 @@ export default function Search() {
 								<FormControl id="max-height">
 									<FormLabel>Max height in CM</FormLabel>
 									<NumberInput
-										ref={maxHeightRef}
 										max={160}
 										min={5}
 										defaultValue={160}
 									>
-										<NumberInputField />
+										<NumberInputField ref={maxHeightRef} />
 										<NumberInputStepper>
 											<NumberIncrementStepper />
 											<NumberDecrementStepper />
@@ -164,12 +161,11 @@ export default function Search() {
 								<FormControl id="min-weight">
 									<FormLabel>Min weight in KG</FormLabel>
 									<NumberInput
-										ref={minWeightRef}
 										max={100}
 										min={5}
 										defaultValue={5}
 									>
-										<NumberInputField />
+										<NumberInputField ref={minWeightRef} />
 										<NumberInputStepper>
 											<NumberIncrementStepper />
 											<NumberDecrementStepper />
@@ -179,12 +175,11 @@ export default function Search() {
 								<FormControl id="max-weight">
 									<FormLabel>Max weight in KG</FormLabel>
 									<NumberInput
-										ref={maxWeightRef}
 										max={100}
 										min={5}
 										defaultValue={100}
 									>
-										<NumberInputField />
+										<NumberInputField ref={maxWeightRef} />
 										<NumberInputStepper>
 											<NumberIncrementStepper />
 											<NumberDecrementStepper />

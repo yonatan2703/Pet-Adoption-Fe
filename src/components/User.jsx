@@ -40,7 +40,6 @@ export default function User(props) {
 					if (userRole === "admin") {
 						unAdmin(user.user_id)
 							.then((res) => {
-								console.log(res);
 								setUserRole("user");
 							})
 							.catch((err) => {
@@ -49,7 +48,6 @@ export default function User(props) {
 					} else {
 						makeAdmin(user.user_id)
 							.then((res) => {
-								console.log(res);
 								setUserRole("admin");
 							})
 							.catch((err) => {

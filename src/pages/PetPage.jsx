@@ -43,7 +43,6 @@ export default function PetPage() {
 		if (pet) {
 			isPetSaved(id)
 				.then((res) => {
-					console.log(res);
 					if (res.data.result) setPetSaved(true);
 					else setPetSaved(false);
 				})

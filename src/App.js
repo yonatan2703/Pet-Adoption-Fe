@@ -41,7 +41,7 @@ function App() {
 		try {
 			localforage.getItem("token", async (err, value) => {
 				if (err) {
-					return console.log(err);
+					return err;
 				}
 				if (value) {
 					axios.defaults.headers.common["Authorization"] = value;

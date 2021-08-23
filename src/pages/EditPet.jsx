@@ -34,7 +34,6 @@ export default function EditPet() {
 	useEffect(() => {
 		getPet(id)
 			.then((res) => {
-				console.log(res);
 				setPet(res.data.pet);
 			})
 			.catch((err) => {
@@ -46,11 +45,8 @@ export default function EditPet() {
 	const handleAddPet = async () => {
 		try {
 			const res = await editPet(id, pet);
-			console.log(pet);
-			console.log(res);
 			if (petImg) {
 				const res2 = await addPetImg(id, petImg);
-				console.log(res2);
 			}
 		} catch (err) {
 			console.log(err);
@@ -89,7 +85,6 @@ export default function EditPet() {
 								placeholder="Type of animal"
 								value={pet.type}
 								onChange={(e) => {
-									console.log(e.target.value);
 									setPet({
 										...pet,
 										type: e.target.value,
