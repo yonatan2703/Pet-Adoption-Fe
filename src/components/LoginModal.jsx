@@ -52,6 +52,7 @@ function LoginModal() {
 	};
 	const handleSignUp = async () => {
 		try {
+			// eslint-disable-next-line
 			const res = await signUp({
 				email: emailRef.current.value,
 				password: passwordRef.current.value,

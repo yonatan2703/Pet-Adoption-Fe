@@ -68,6 +68,7 @@ export default function PetPage() {
 
 	const handleSavePet = async () => {
 		try {
+			// eslint-disable-next-line
 			const res = await savePet(id);
 			setPetSaved(!petSaved);
 		} catch (err) {
@@ -77,6 +78,7 @@ export default function PetPage() {
 
 	const handleUnSavePet = async () => {
 		try {
+			// eslint-disable-next-line
 			const res = await deleteSavedPet(id);
 			setPetSaved(!petSaved);
 		} catch (err) {
@@ -86,6 +88,7 @@ export default function PetPage() {
 
 	const handleAdoptPet = async () => {
 		try {
+			// eslint-disable-next-line
 			const res = await adpotPet(id, "Adopted");
 			setPet({
 				...pet,
@@ -100,6 +103,7 @@ export default function PetPage() {
 
 	const handleFosterPet = async () => {
 		try {
+			// eslint-disable-next-line
 			const res = await adpotPet(id, "Fostered");
 			setPet({
 				...pet,

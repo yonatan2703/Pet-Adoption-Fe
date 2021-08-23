@@ -44,8 +44,10 @@ export default function EditPet() {
 
 	const handleAddPet = async () => {
 		try {
+			// eslint-disable-next-line
 			const res = await editPet(id, pet);
 			if (petImg) {
+				// eslint-disable-next-line
 				const res2 = await addPetImg(id, petImg);
 			}
 		} catch (err) {
