@@ -20,6 +20,8 @@ import ProfileSettings from "./pages/ProfileSettings";
 import AdminAddPet from "./pages/AdminAddPet";
 import EditPet from "./pages/EditPet";
 import UserPage from "./pages/UserPage";
+import PrivateAdminRoute from "./Routes/PrivateAdminRoute.jsx";
+import PrivateUserRoute from "./Routes/PrivateAdminRoute.jsx";
 
 import { loginOnLoad } from "./api/userApi";
 function App() {
@@ -78,24 +80,34 @@ function App() {
 						<Route exact path="/search">
 							<Search />
 						</Route>
-						<Route exact path="/my-pets">
-							<MyPets />
-						</Route>
-						<Route exact path="/profile-settings">
-							<ProfileSettings />
-						</Route>
 						<Route exact path="/pet-page/:id">
 							<PetPage />
 						</Route>
-						<Route exact path="/add-pet">
-							<AdminAddPet />
-						</Route>
-						<Route exact path="/user/:id">
-							<UserPage />
-						</Route>
-						<Route exact path="/edit-pet/:id">
-							<EditPet />
-						</Route>
+						<PrivateUserRoute
+							component={MyPets}
+							path="/my-pets"
+							exact
+						/>
+						<PrivateUserRoute
+							component={ProfileSettings}
+							path="/profile-settings"
+							exact
+						/>
+						<PrivateAdminRoute
+							component={AdminAddPet}
+							path="/add-pet"
+							exact
+						/>
+						<PrivateAdminRoute
+							component={UserPage}
+							path="/user/:id"
+							exact
+						/>
+						<PrivateAdminRoute
+							component={EditPet}
+							path="/edit-pet/:id"
+							exact
+						/>
 						<Route from="" to="/home">
 							<Redirect to="/home"></Redirect>
 						</Route>

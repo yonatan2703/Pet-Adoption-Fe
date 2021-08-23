@@ -4,8 +4,6 @@ import AppContext from "../context/AppContext";
 import PasswordInput from "../components/PasswordInput";
 import { editUser } from "../api/userApi";
 
-import { Redirect } from "react-router-dom";
-
 import {
 	Button,
 	FormControl,
@@ -42,7 +40,6 @@ export default function Search() {
 
 	return (
 		<>
-			{!userData && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<form
 				className="container"

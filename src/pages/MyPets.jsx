@@ -5,7 +5,6 @@ import AppContext from "../context/AppContext";
 import { getMyPets } from "../api/userApi";
 
 import { v4 as uuidv4 } from "uuid";
-import { Redirect } from "react-router-dom";
 import { Button, SimpleGrid } from "@chakra-ui/react";
 
 export default function MyPets() {
@@ -31,7 +30,6 @@ export default function MyPets() {
 
 	return (
 		<>
-			{!userData && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<div className="container">
 				<Button

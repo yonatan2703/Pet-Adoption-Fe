@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
 import { editPet, addPetImg, getPet } from "../api/petApi";
 
-import { Redirect, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -22,7 +22,7 @@ export default function EditPet() {
 	const { useContext, useState, useEffect } = React;
 
 	const appContext = useContext(AppContext);
-	const { animalTypes, userData } = appContext;
+	const { animalTypes } = appContext;
 
 	const [pet, setPet] = useState({
 		hypoallergenic: false,
@@ -57,7 +57,6 @@ export default function EditPet() {
 
 	return (
 		<>
-			{userData?.role !== "admin" && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			{pet && (
 				<form

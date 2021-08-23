@@ -2,10 +2,9 @@ import * as React from "react";
 import NavBar from "../components/NavBar";
 import PetCard from "../components/PetCard";
 import PasswordInput from "../components/PasswordInput";
-import AppContext from "../context/AppContext";
 import { editUserById, getAllUserDetails } from "../api/userApi";
 
-import { Redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -19,11 +18,9 @@ import {
 } from "@chakra-ui/react";
 
 export default function Search() {
-	const { useState, useEffect, useContext, useRef } = React;
+	const { useState, useEffect, useRef } = React;
 
 	const { id } = useParams();
-	const appContext = useContext(AppContext);
-	const { userData } = appContext;
 
 	const [userSavedPets, setUserSavedPets] = useState();
 	const [userOwnedPets, setUserOwnedPets] = useState();
@@ -63,7 +60,6 @@ export default function Search() {
 
 	return (
 		<>
-			{userData?.role !== "admin" && <Redirect from="" to="/home" />}
 			<NavBar></NavBar>
 			<form
 				className="container"
