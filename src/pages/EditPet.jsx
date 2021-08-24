@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import AppContext from "../context/AppContext";
 import { editPet, addPetImg, getPet } from "../api/petApi";
 
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import {
@@ -45,10 +45,12 @@ export default function EditPet() {
 	const handleAddPet = async () => {
 		try {
 			// eslint-disable-next-line
-			const res = await editPet(id, pet);
+            const res = await editPet(id, pet);
+            if (!res?.data) throw res;
 			if (petImg) {
 				// eslint-disable-next-line
-				const res2 = await addPetImg(id, petImg);
+                const res2 = await addPetImg(id, petImg);
+                if (!res2?.data) throw res;
 			}
 		} catch (err) {
 			console.log(err);

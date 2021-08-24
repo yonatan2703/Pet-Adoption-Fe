@@ -6,7 +6,7 @@ export const addPet = async (pet) => {
 		const result = await axios.post(`${baseUrl}pet`, pet);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -15,7 +15,7 @@ export const searchPets = async (query) => {
 		const result = await axios.get(`${baseUrl}pet/${query}`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -24,7 +24,7 @@ export const getPet = async (id) => {
 		const result = await axios.get(`${baseUrl}pet/${id}`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -33,7 +33,7 @@ export const editPet = async (id, pet) => {
 		const result = await axios.put(`${baseUrl}pet/${id}`, pet);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -44,7 +44,7 @@ export const adpotPet = async (id, adoption_status) => {
 		});
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -53,7 +53,7 @@ export const returnPet = async (id) => {
 		const result = await axios.post(`${baseUrl}pet/${id}/return`, {});
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -62,7 +62,7 @@ export const savePet = async (id) => {
 		const result = await axios.post(`${baseUrl}pet/${id}/save`, {});
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -71,7 +71,7 @@ export const deleteSavedPet = async (id) => {
 		const result = await axios.delete(`${baseUrl}pet/${id}/save`, {});
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -80,7 +80,7 @@ export const addPetImg = async (id, petImg) => {
 		const result = await axios.put(`${baseUrl}pet/${id}/img`, petImg);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -89,6 +89,6 @@ export const isPetSaved = async (id) => {
 		const result = await axios.get(`${baseUrl}pet/${id}/saved`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };

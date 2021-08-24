@@ -33,8 +33,10 @@ export default function AdminAddPet() {
 	const handleAddPet = async () => {
 		try {
 			const res = await addPet(pet);
+			if (!res?.data) throw res;
 			// eslint-disable-next-line
 			const res2 = await addPetImg(res.data.result.insertId, petImg);
+			if (!res2?.data) throw res;
 			setPet();
 		} catch (err) {
 			console.log(err);

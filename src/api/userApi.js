@@ -8,7 +8,7 @@ export const login = async (user) => {
 		axios.defaults.headers.common["Authorization"] = result.data.token;
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -17,7 +17,7 @@ export const signUp = async (user) => {
 		const result = await axios.post(`${baseUrl}signup`, user);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -26,7 +26,7 @@ export const loginOnLoad = async () => {
 		const result = await axios.get(`${baseUrl}login`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -35,7 +35,7 @@ export const makeAdmin = async (userId) => {
 		const result = await axios.put(`${baseUrl}user/makeAdmin/${userId}`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -44,7 +44,7 @@ export const unAdmin = async (userId) => {
 		const result = await axios.put(`${baseUrl}user/unAdmin/${userId}`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -53,7 +53,7 @@ export const getAllUsers = async () => {
 		const result = await axios.get(`${baseUrl}user`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -62,7 +62,7 @@ export const getUserById = async (id) => {
 		const result = await axios.get(`${baseUrl}user/${id}`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -71,7 +71,7 @@ export const getUser = async () => {
 		const result = await axios.get(`${baseUrl}user`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -80,7 +80,7 @@ export const editUserById = async (id, user) => {
 		const result = await axios.put(`${baseUrl}user/${id}`, user);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -89,7 +89,7 @@ export const editUser = async (user) => {
 		const result = await axios.put(`${baseUrl}user`, user);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -98,7 +98,7 @@ export const getAllUserDetails = async (id) => {
 		const result = await axios.get(`${baseUrl}user/${id}/full`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -107,7 +107,7 @@ export const getAllMyDetails = async () => {
 		const result = await axios.get(`${baseUrl}user/full`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -116,7 +116,7 @@ export const getUserPets = async (id) => {
 		const result = await axios.get(`${baseUrl}pet/user/${id}`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };
 
@@ -125,6 +125,6 @@ export const getMyPets = async () => {
 		const result = await axios.get(`${baseUrl}pet/user`);
 		return result;
 	} catch (error) {
-		console.log(error);
+		return error;
 	}
 };

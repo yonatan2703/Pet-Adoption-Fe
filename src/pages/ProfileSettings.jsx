@@ -27,15 +27,20 @@ export default function Search() {
 	const bioRef = useRef();
 
 	const handleSave = async () => {
-		const res = await editUser({
-			email: emailRef.current.value,
-			fName: first_nameRef.current.value,
-			lName: last_nameRef.current.value,
-			phone: phoneRef.current.value,
-			bio: bioRef.current.value,
-			password: passwordRef?.current?.value,
-		});
-		setUserData(res.data.user);
+		try {
+			const res = await editUser({
+				email: emailRef.current.value,
+				fName: first_nameRef.current.value,
+				lName: last_nameRef.current.value,
+				phone: phoneRef.current.value,
+				bio: bioRef.current.value,
+				password: passwordRef?.current?.value,
+			});
+			setUserData(res.data.user);
+			if (!res?.data) throw res;
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (

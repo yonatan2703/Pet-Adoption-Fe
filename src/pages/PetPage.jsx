@@ -43,7 +43,7 @@ export default function PetPage() {
 		if (pet) {
 			isPetSaved(id)
 				.then((res) => {
-					if (res.data.result) setPetSaved(true);
+					if (res?.data?.result) setPetSaved(true);
 					else setPetSaved(false);
 				})
 				.catch((err) => {
@@ -55,6 +55,7 @@ export default function PetPage() {
 	const handleReturnPet = async () => {
 		try {
 			const res = await returnPet(id);
+			if (!res?.data) throw res;
 			if (res.data.result)
 				setPet({
 					...pet,
@@ -69,7 +70,8 @@ export default function PetPage() {
 	const handleSavePet = async () => {
 		try {
 			// eslint-disable-next-line
-			const res = await savePet(id);
+            const res = await savePet(id);
+            if (!res?.data) throw res;
 			setPetSaved(!petSaved);
 		} catch (err) {
 			console.log(err);
@@ -79,7 +81,8 @@ export default function PetPage() {
 	const handleUnSavePet = async () => {
 		try {
 			// eslint-disable-next-line
-			const res = await deleteSavedPet(id);
+            const res = await deleteSavedPet(id);
+            if (!res?.data) throw res;
 			setPetSaved(!petSaved);
 		} catch (err) {
 			console.log(err);
@@ -89,7 +92,8 @@ export default function PetPage() {
 	const handleAdoptPet = async () => {
 		try {
 			// eslint-disable-next-line
-			const res = await adpotPet(id, "Adopted");
+            const res = await adpotPet(id, "Adopted");
+            if (!res?.data) throw res;
 			setPet({
 				...pet,
 				owner_id: userData.user_id,
@@ -104,7 +108,8 @@ export default function PetPage() {
 	const handleFosterPet = async () => {
 		try {
 			// eslint-disable-next-line
-			const res = await adpotPet(id, "Fostered");
+            const res = await adpotPet(id, "Fostered");
+            if (!res?.data) throw res;
 			setPet({
 				...pet,
 				owner_id: userData.user_id,

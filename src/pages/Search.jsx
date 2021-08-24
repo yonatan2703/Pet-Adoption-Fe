@@ -62,8 +62,13 @@ export default function Search() {
 			pathname: "/search",
 			search: query,
 		});
-		const res = await searchPets(query);
-		setSearchResults(res?.data);
+		try {
+			const res = await searchPets(query);
+			if (!res?.data) throw res;
+			setSearchResults(res?.data);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	useEffect(() => {
@@ -89,132 +94,141 @@ export default function Search() {
 				>
 					{searchSimple ? "Advanced Search" : "Simple Search"}
 				</Button>
-
-				<Stack spacing={3} className="mb-3">
-					<FormControl id="animal-type">
-						<FormLabel>Type</FormLabel>
-						<Select placeholder="Type of animal" ref={typeRef}>
-							{animalTypes.map((ele) => {
-								return <option>{ele}</option>;
-							})}
-						</Select>
-					</FormControl>
-					{!searchSimple && (
-						<>
-							<FormControl id="adoption-status">
-								<FormLabel>Adoption status</FormLabel>
-								<Select
-									placeholder="Adoption status"
-									ref={adoption_statusRef}
-								>
-									<option>Adopted</option>
-									<option>Fostered</option>
-									<option>Available</option>
-								</Select>
-							</FormControl>
-							<FormControl id="animal-name">
-								<FormLabel>Name</FormLabel>
-								<Input
-									placeholder="Animal name"
-									ref={nameRef}
-								/>
-							</FormControl>
-							<Stack
-								spacing={3}
-								direction="row"
-								id="animal-height"
-							>
-								<FormControl id="min-height">
-									<FormLabel>Min height in CM</FormLabel>
-									<NumberInput
-										max={160}
-										min={5}
-										defaultValue={5}
-									>
-										<NumberInputField ref={minHeightRef} />
-										<NumberInputStepper>
-											<NumberIncrementStepper />
-											<NumberDecrementStepper />
-										</NumberInputStepper>
-									</NumberInput>
-								</FormControl>
-								<FormControl id="max-height">
-									<FormLabel>Max height in CM</FormLabel>
-									<NumberInput
-										max={160}
-										min={5}
-										defaultValue={160}
-									>
-										<NumberInputField ref={maxHeightRef} />
-										<NumberInputStepper>
-											<NumberIncrementStepper />
-											<NumberDecrementStepper />
-										</NumberInputStepper>
-									</NumberInput>
-								</FormControl>
-							</Stack>
-							<Stack
-								spacing={3}
-								direction="row"
-								id="animal-weight"
-							>
-								<FormControl id="min-weight">
-									<FormLabel>Min weight in KG</FormLabel>
-									<NumberInput
-										max={100}
-										min={5}
-										defaultValue={5}
-									>
-										<NumberInputField ref={minWeightRef} />
-										<NumberInputStepper>
-											<NumberIncrementStepper />
-											<NumberDecrementStepper />
-										</NumberInputStepper>
-									</NumberInput>
-								</FormControl>
-								<FormControl id="max-weight">
-									<FormLabel>Max weight in KG</FormLabel>
-									<NumberInput
-										max={100}
-										min={5}
-										defaultValue={100}
-									>
-										<NumberInputField ref={maxWeightRef} />
-										<NumberInputStepper>
-											<NumberIncrementStepper />
-											<NumberDecrementStepper />
-										</NumberInputStepper>
-									</NumberInput>
-								</FormControl>
-							</Stack>
-						</>
-					)}
-				</Stack>
-				<Button
-					colorScheme="blue"
-					onClick={() => {
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
 						handleSearch();
 					}}
 				>
-					Search
-				</Button>
-				{searchResults && searchResults.length ? (
-					<SimpleGrid columns={3} spacing={5}>
-						{searchResults.map((ele) => {
-							return (
-								<PetCard
-									key={uuidv4()}
-									pet={ele}
-									width={"100%"}
-								></PetCard>
-							);
-						})}
-					</SimpleGrid>
-				) : (
-					searchResults &&
-					searchResults.length === 0 &&
-					"No search results"
-				)}
+					<Stack spacing={3} className="mb-3">
+						<FormControl id="animal-type">
+							<FormLabel>Type</FormLabel>
+							<Select placeholder="Type of animal" ref={typeRef}>
+								{animalTypes.map((ele) => {
+									return <option>{ele}</option>;
+								})}
+							</Select>
+						</FormControl>
+						{!searchSimple && (
+							<>
+								<FormControl id="adoption-status">
+									<FormLabel>Adoption status</FormLabel>
+									<Select
+										placeholder="Adoption status"
+										ref={adoption_statusRef}
+									>
+										<option>Adopted</option>
+										<option>Fostered</option>
+										<option>Available</option>
+									</Select>
+								</FormControl>
+								<FormControl id="animal-name">
+									<FormLabel>Name</FormLabel>
+									<Input
+										placeholder="Animal name"
+										ref={nameRef}
+									/>
+								</FormControl>
+								<Stack
+									spacing={3}
+									direction="row"
+									id="animal-height"
+								>
+									<FormControl id="min-height">
+										<FormLabel>Min height in CM</FormLabel>
+										<NumberInput
+											max={160}
+											min={5}
+											defaultValue={5}
+										>
+											<NumberInputField
+												ref={minHeightRef}
+											/>
+											<NumberInputStepper>
+												<NumberIncrementStepper />
+												<NumberDecrementStepper />
+											</NumberInputStepper>
+										</NumberInput>
+									</FormControl>
+									<FormControl id="max-height">
+										<FormLabel>Max height in CM</FormLabel>
+										<NumberInput
+											max={160}
+											min={5}
+											defaultValue={160}
+										>
+											<NumberInputField
+												ref={maxHeightRef}
+											/>
+											<NumberInputStepper>
+												<NumberIncrementStepper />
+												<NumberDecrementStepper />
+											</NumberInputStepper>
+										</NumberInput>
+									</FormControl>
+								</Stack>
+								<Stack
+									spacing={3}
+									direction="row"
+									id="animal-weight"
+								>
+									<FormControl id="min-weight">
+										<FormLabel>Min weight in KG</FormLabel>
+										<NumberInput
+											max={100}
+											min={5}
+											defaultValue={5}
+										>
+											<NumberInputField
+												ref={minWeightRef}
+											/>
+											<NumberInputStepper>
+												<NumberIncrementStepper />
+												<NumberDecrementStepper />
+											</NumberInputStepper>
+										</NumberInput>
+									</FormControl>
+									<FormControl id="max-weight">
+										<FormLabel>Max weight in KG</FormLabel>
+										<NumberInput
+											max={100}
+											min={5}
+											defaultValue={100}
+										>
+											<NumberInputField
+												ref={maxWeightRef}
+											/>
+											<NumberInputStepper>
+												<NumberIncrementStepper />
+												<NumberDecrementStepper />
+											</NumberInputStepper>
+										</NumberInput>
+									</FormControl>
+								</Stack>
+							</>
+						)}
+					</Stack>
+					<Button colorScheme="blue" type="submit">
+						Search
+					</Button>
+					{searchResults && searchResults.length ? (
+						<SimpleGrid columns={3} spacing={5}>
+							{searchResults.map((ele) => {
+								return (
+									<PetCard
+										key={uuidv4()}
+										pet={ele}
+										width={"100%"}
+									></PetCard>
+								);
+							})}
+						</SimpleGrid>
+					) : (
+						searchResults &&
+						searchResults.length === 0 &&
+						"No search results"
+					)}
+				</form>
 			</div>
 		</>
 	);
