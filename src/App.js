@@ -48,8 +48,8 @@ function App() {
 				if (value) {
 					axios.defaults.headers.common["Authorization"] = value;
 					const user = await loginOnLoad();
-					if (user) {
-						setUserData(user.data.user);
+					if (user?.data) {
+						setUserData(user?.data?.user);
 					}
 				}
 			});
