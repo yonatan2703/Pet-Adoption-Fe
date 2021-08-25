@@ -21,7 +21,7 @@ import AdminAddPet from "./pages/AdminAddPet";
 import EditPet from "./pages/EditPet";
 import UserPage from "./pages/UserPage";
 import PrivateAdminRoute from "./Routes/PrivateAdminRoute.jsx";
-import PrivateUserRoute from "./Routes/PrivateAdminRoute.jsx";
+import PrivateUserRoute from "./Routes/PrivateUserRoute.jsx";
 
 import { loginOnLoad } from "./api/userApi";
 function App() {
